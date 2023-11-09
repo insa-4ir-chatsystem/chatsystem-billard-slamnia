@@ -37,8 +37,16 @@ public class ContactManager {
         boolean contactPresent = false;
         for (Contact contact : contacts) {
             if (contact.sameIP(newContact.getIp())) {
-                contact.setName(newContact.getName());
-                contact.setState(ContactState.CONNECTED);
+                if (newContact.getName().isEmpty()) {
+                    if (contact.getName().isEmpty()) {
+                        contact.setState(ContactState.UNNAMED);
+                    } else {
+                        contact.setState(ContactState.CONNECTED);
+                    }
+                } else {
+                    contact.setState(ContactState.CONNECTED);
+                    contact.setName(newContact.getName());
+                }
                 contactPresent = true;
                 break;
             }
@@ -49,13 +57,18 @@ public class ContactManager {
     }
 
     public void changePseudo(String name, String ip) {
+        boolean changed = false;
         for (Contact contact : contacts) {
             if (contact.sameIP(ip)) {
                 if (contact.getState() == ContactState.UNNAMED) {
                     contact.setState(ContactState.CONNECTED);
                 }
                 contact.setName(name);
+                changed = true;
             }
+        }
+        if (!changed) {
+            this.addContact(new Contact(name, ip));
         }
     }
     public void changeState(ContactState state, String ip) {
@@ -74,5 +87,9 @@ public class ContactManager {
             }
         }
         return result;
+    }
+
+    public void resetList() {
+        this.contacts.clear();
     }
 }
