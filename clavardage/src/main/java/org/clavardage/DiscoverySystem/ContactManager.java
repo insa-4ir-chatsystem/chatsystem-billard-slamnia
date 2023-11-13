@@ -1,8 +1,9 @@
 package org.clavardage.DiscoverySystem;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
-public class ContactManager {
+public class ContactManager extends Observable {
     private static ContactManager instance;
 
     private final ArrayList<Contact> contacts;
@@ -13,17 +14,17 @@ public class ContactManager {
         contacts = new ArrayList<>();
     }
 
-    public static ContactManager getInstance() {
+    public synchronized static ContactManager getInstance() {
         if (ContactManager.instance == null) {
-            return new ContactManager();
+            ContactManager.instance = new ContactManager();
         }
         return ContactManager.instance;
     }
 
-    public void setPseudo(String pseudo) throws Exception {
+    public void setPseudo(String pseudo) throws ExistingPseudoException {
         for (Contact contact : contacts) {
             if (contact.getState() == ContactState.CONNECTED && contact.getName().equals(pseudo)) {
-                throw new Exception("Pseudonym already existing");
+                throw new ExistingPseudoException("Pseudonym already existing");
             }
         }
         this.pseudo = pseudo;
@@ -33,7 +34,7 @@ public class ContactManager {
         return this.pseudo;
     }
 
-    public void addContact(Contact newContact) {
+    public synchronized void addContact(Contact newContact) {
         boolean contactPresent = false;
         for (Contact contact : contacts) {
             if (contact.sameIP(newContact.getIp())) {
@@ -53,17 +54,20 @@ public class ContactManager {
         }
         if (!contactPresent) {
             contacts.add(newContact);
+            this.notifyObservers(this.contacts);
         }
     }
 
-    public void changePseudo(String name, String ip) {
+    public synchronized void changePseudo(String name, String ip) {
         boolean changed = false;
         for (Contact contact : contacts) {
             if (contact.sameIP(ip)) {
+                contact.setName(name);
                 if (contact.getState() == ContactState.UNNAMED) {
                     contact.setState(ContactState.CONNECTED);
+                } else {
+                    this.notifyObservers(this.contacts);
                 }
-                contact.setName(name);
                 changed = true;
             }
         }
@@ -71,10 +75,12 @@ public class ContactManager {
             this.addContact(new Contact(name, ip));
         }
     }
-    public void changeState(ContactState state, String ip) {
+
+    public synchronized void changeState(ContactState state, String ip) {
         for (Contact contact : contacts) {
             if (contact.sameIP(ip)) {
                 contact.setState(state);
+                this.notifyObservers(this.contacts);
             }
         }
     }
@@ -91,5 +97,6 @@ public class ContactManager {
 
     public void resetList() {
         this.contacts.clear();
+        this.notifyObservers(this.contacts);
     }
 }

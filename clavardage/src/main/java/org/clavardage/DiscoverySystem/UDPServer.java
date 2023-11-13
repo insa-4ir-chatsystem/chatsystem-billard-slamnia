@@ -1,7 +1,9 @@
 package org.clavardage.DiscoverySystem;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
 
 public class UDPServer extends Thread {
@@ -11,61 +13,56 @@ public class UDPServer extends Thread {
     private final NetworkManager networkMgr;
     private final DatagramSocket socket;
 
-    public UDPServer(int port) {
+    public UDPServer(DatagramSocket socket, NetworkManager netMgr) {
         super("UDPServer");
         this.contactMgr = ContactManager.getInstance();
-        this.networkMgr = NetworkManager.getInstance();
-        try {
-            this.socket = new DatagramSocket(port);
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        }
+        this.networkMgr = netMgr;
+        this.socket = socket;
         this.running = true;
     }
 
     @Override
     public void run() {
-        try {
-            boolean syncRunning;
+        boolean syncRunning;
+        synchronized (this) {
+            syncRunning = this.running;
+        }
+        byte[] buf = new byte[256];
+
+        while (syncRunning) {
             synchronized (this) {
                 syncRunning = this.running;
             }
-            byte[] buf = new byte[256];
-
-            while (syncRunning) {
-                synchronized (this) {
-                    syncRunning = this.running;
-                }
-                DatagramPacket inPacket = new DatagramPacket(buf, buf.length);
+            DatagramPacket inPacket = new DatagramPacket(buf, buf.length);
+            try {
                 socket.receive(inPacket);
-                String received = new String(inPacket.getData(), 0, inPacket.getLength());
-                String ip = inPacket.getAddress().toString();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            String received = new String(inPacket.getData(), 0, inPacket.getLength());
+            String ip = inPacket.getAddress().toString();
 
-                if (received.isEmpty()) {
+            if (received.isEmpty()) {
+                continue;
+            }
+
+            switch (received.charAt(0)) {
+                case 'e' -> {
+                    contactMgr.changeState(ContactState.DISCONNECTED, ip);
+                }
+                case 'c' -> {
+                    contactMgr.addContact(new Contact(ip));
+                    networkMgr.send(ip, "p" + contactMgr.getPseudo());
+                }
+                case 'p' -> {
+                    contactMgr.changePseudo(received.substring(1), ip);
+                }
+                default -> {
                     continue;
                 }
-
-                switch (received.charAt(0)) {
-                    case 'e' -> {
-                        contactMgr.changeState(ContactState.DISCONNECTED, ip);
-                    }
-
-                    case 'c' -> {
-                        contactMgr.addContact(new Contact(ip));
-                        networkMgr.send(ip, "p" + contactMgr.getPseudo());
-                    }
-                    case 'p' -> {
-                        contactMgr.changePseudo(received.substring(1), ip);
-                    }
-                    default -> {
-                        continue;
-                    }
-                }
             }
-            socket.close();
-        } catch (Exception e) {
-            throw new RuntimeException("Failure of UDP Server");
         }
+        socket.close();
     }
 
     public synchronized void halt() {
