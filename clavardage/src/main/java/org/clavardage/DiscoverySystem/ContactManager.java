@@ -23,6 +23,7 @@ public class ContactManager extends Observable {
 
     public void setPseudo(String pseudo) throws ExistingPseudoException {
         for (Contact contact : contacts) {
+            System.out.println(contact.getName());
             if (contact.getState() == ContactState.CONNECTED && contact.getName().equals(pseudo)) {
                 throw new ExistingPseudoException("Pseudonym already existing");
             }

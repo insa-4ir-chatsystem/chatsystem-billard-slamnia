@@ -13,14 +13,16 @@ import java.util.concurrent.atomic.AtomicReference;
 public class DiscoverySystemTests {
     private static DiscoverySystem ds;
     private static DatagramSocket socket;
+    private static final int testPort = 1234;
     @BeforeAll
     public static void setUp() {
-        ds = DiscoverySystem.getInstance(1234);
+
         try {
             socket = new DatagramSocket(NetworkManager.getPort());
         } catch (SocketException e) {
             throw new RuntimeException(e);
         }
+        ds = DiscoverySystem.getInstance(DiscoverySystemTests.testPort);
     }
 
     @DisplayName("Test pour la connexion de l'agent")
@@ -54,6 +56,27 @@ public class DiscoverySystemTests {
     @Test
     public void connectionExistingPseudoTest() {
 
+        assertThrows(ExistingPseudoException.class,() -> {
+            ds.connect("Pierre");
+        });
+        byte[] buf = new byte[256];
+        DatagramPacket inPacket = new DatagramPacket(buf, buf.length);
+        try {
+            socket.receive(inPacket);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String received = new String(inPacket.getData(), 0, inPacket.getLength());
+
+        assertEquals("c", received);
+        byte[] buf1 = "pPierre".getBytes();
+        try {
+            InetAddress address = InetAddress.getByName("127.0.0.1");
+            DatagramPacket packet = new DatagramPacket(buf1, buf1.length, address, DiscoverySystemTests.testPort);
+            socket.send(packet);
+        } catch (Exception ignored) {
+
+        }
     }
 
     @DisplayName("Test pour la déconnexion de l'agent")

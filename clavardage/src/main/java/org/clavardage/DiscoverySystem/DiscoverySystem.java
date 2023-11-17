@@ -34,10 +34,12 @@ public class DiscoverySystem {
     public void connect(String pseudo) throws ExistingPseudoException{
         networkManager.sendAll("c");
         try {
-            Thread.sleep(1000);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+
         contactManager.setPseudo(pseudo);
         networkManager.sendAll("p"+pseudo);
     }
