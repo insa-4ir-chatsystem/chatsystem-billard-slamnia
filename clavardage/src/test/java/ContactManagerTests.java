@@ -30,4 +30,5 @@ public class ContactManagerTests {
         manager.changePseudo("Michel", "a");
         assertEquals(manager.getConnectedContacts().size(), 1);
     }
+
 }
