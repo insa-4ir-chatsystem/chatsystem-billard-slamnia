@@ -39,4 +39,13 @@ public class Contact {
     public boolean sameIP(String ip) {
         return ip.equals(this.ip);
     }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "name='" + name + '\'' +
+                ", ip='" + ip + '\'' +
+                ", state=" + state +
+                '}';
+    }
 }
