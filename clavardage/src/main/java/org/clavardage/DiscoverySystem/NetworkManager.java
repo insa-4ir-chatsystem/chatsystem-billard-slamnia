@@ -11,7 +11,7 @@ public class NetworkManager {
         try {
             //NetworkManager.socket = new DatagramSocket(NetworkManager.PORT);
             this.socket = new DatagramSocket(port);
-            System.out.println("Port network server : " + this.socket.getLocalPort());
+//            System.out.println("Port network server : " + this.socket.getLocalPort());
         } catch (Exception e) {
             throw new RuntimeException("Could not create client Socket");
         }
