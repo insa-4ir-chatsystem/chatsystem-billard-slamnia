@@ -32,6 +32,38 @@ public class DiscoverySystemTests {
         DiscoverySystemTests.contactManager.setAllToDisconnected();
     }
 
+    public void sendFromTestingNetwork(String msg) {
+        byte[] buf1 = msg.getBytes();
+        try {
+            InetAddress address = InetAddress.getByName("127.0.0.1");
+            DatagramPacket packet = new DatagramPacket(buf1, buf1.length, address, DiscoverySystemTests.testPort);
+            socket.send(packet);
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    public void expectPacket(String msg) {
+        byte[] buf = new byte[256];
+        DatagramPacket inPacket = new DatagramPacket(buf, buf.length);
+        try {
+            socket.receive(inPacket);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String received = new String(inPacket.getData(), 0, inPacket.getLength());
+
+        assertEquals(msg, received);
+    }
+
+    public void connectionPhase(String pseudo) {
+        assertDoesNotThrow(() -> {
+            ds.connect(pseudo);
+        });
+        expectPacket("c");
+
+        expectPacket("p" + pseudo);
+    }
     @DisplayName("Test pour la connexion de l'agent")
     @Test
     public void connectionTest() {
@@ -42,28 +74,14 @@ public class DiscoverySystemTests {
     @Test
     public void connectionExistingPseudoTest() {
 
-        DiscoverySystemTests.contactManager.addContact(new Contact("Pierre", "127.0.0.1"));
-        assertThrows(ExistingPseudoException.class,() -> {
-            ds.connect("Pierre");
+        Thread t = new Thread(() -> {
+            assertThrows(ExistingPseudoException.class,() -> {
+                ds.connect("Pierre");
+            });
         });
-        byte[] buf = new byte[256];
-        DatagramPacket inPacket = new DatagramPacket(buf, buf.length);
-        try {
-            socket.receive(inPacket);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        String received = new String(inPacket.getData(), 0, inPacket.getLength());
-
-        assertEquals("c", received);
-        byte[] buf1 = "pPierre".getBytes();
-        try {
-            InetAddress address = InetAddress.getByName("127.0.0.1");
-            DatagramPacket packet = new DatagramPacket(buf1, buf1.length, address, DiscoverySystemTests.testPort);
-            socket.send(packet);
-        } catch (Exception ignored) {
-
-        }
+        t.start();
+        expectPacket("c");
+        sendFromTestingNetwork("pPierre");
     }
 
     @DisplayName("Test pour la déconnexion de l'agent")
@@ -72,56 +90,26 @@ public class DiscoverySystemTests {
 
     }
 
-    public void connectionPhase(String pseudo) {
-        assertDoesNotThrow(() -> {
-            ds.connect(pseudo);
-        });
-        byte[] buf = new byte[256];
-        DatagramPacket inPacket = new DatagramPacket(buf, buf.length);
-        try {
-            socket.receive(inPacket);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        String received = new String(inPacket.getData(), 0, inPacket.getLength());
-
-        assertEquals("c", received);
-
-        try {
-            socket.receive(inPacket);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        received = new String(inPacket.getData(), 0, inPacket.getLength());
-
-        assertEquals("p" + pseudo, received);
-    }
 
     @DisplayName("Test pour le changement de pseudo de l'agent")
     @Test
     public void changePseudoTest() {
-
-        assertThrows(ExistingPseudoException.class,() -> {
-            ds.connect("Pierre");
+        Thread t = new Thread(() -> {
+            this.connectionPhase("Pierre");
         });
-        byte[] buf = new byte[256];
-        DatagramPacket inPacket = new DatagramPacket(buf, buf.length);
+        t.start();
+        sendFromTestingNetwork("pCedric");
         try {
-            socket.receive(inPacket);
-        } catch (IOException e) {
+            t.join();
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        String received = new String(inPacket.getData(), 0, inPacket.getLength());
-
-        assertEquals("c", received);
-        byte[] buf1 = "pPierre".getBytes();
-        try {
-            InetAddress address = InetAddress.getByName("127.0.0.1");
-            DatagramPacket packet = new DatagramPacket(buf1, buf1.length, address, DiscoverySystemTests.testPort);
-            socket.send(packet);
-        } catch (Exception ignored) {
-
-        }
+        assertDoesNotThrow(() -> {
+            ds.changePseudo("Valerie");
+        });
+        assertThrows(ExistingPseudoException.class, () -> {
+            ds.changePseudo("Cedric");
+        });
     }
 
     @DisplayName("Test pour la notification des Observers")

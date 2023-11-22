@@ -29,7 +29,7 @@ public class UDPServer extends Thread {
         while (this.running) {
             /** Creation of a new UDP PDU to receive incoming packets **/
             DatagramPacket inPacket = new DatagramPacket(buf, buf.length);
-            System.out.println("Port Udp server : " + this.socket.getLocalPort());
+//            System.out.println("Port Udp server : " + this.socket.getLocalPort());
             try {
                 socket.receive(inPacket);
             } catch (SocketException e) {
@@ -60,7 +60,7 @@ public class UDPServer extends Thread {
                 }
                 /** New Pseudo of an Agent **/
                 case 'p' -> {
-                    System.out.println("pseudo received : " +received.substring(1) );
+//                    System.out.println("pseudo received : " +received.substring(1) );
                     contactMgr.changePseudo(received.substring(1), ip);
                 }
                 default -> {
