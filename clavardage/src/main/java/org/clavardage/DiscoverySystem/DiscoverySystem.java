@@ -1,5 +1,7 @@
 package org.clavardage.DiscoverySystem;
 
+import java.util.Observer;
+
 public class DiscoverySystem {
     private NetworkManager networkManager;
 
@@ -34,27 +36,41 @@ public class DiscoverySystem {
     public void connect(String pseudo) throws ExistingPseudoException{
         networkManager.sendAll("c");
         try {
-            Thread.sleep(1000);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+
         contactManager.setPseudo(pseudo);
         networkManager.sendAll("p"+pseudo);
     }
 
     public void disconnect() {
-
+        networkManager.sendAll("e");
+        contactManager.setAllToDisconnected();
     }
 
-    public void changePseudo(String pseudo) throws ExistingPseudoException{
-
+    public void changePseudo(String pseudo) throws ExistingPseudoException {
+        contactManager.setPseudo(pseudo);
+        networkManager.sendAll("p" + pseudo);
     }
 
-    public void attachObserverToContactList() {
-
+    public void attachObserverToContactList(Observer o) {
+        this.contactManager.addObserver(o);
     }
 
-    public void deleteObserver() {
+    public void deleteObserver(Observer o) {
+        this.contactManager.deleteObserver(o);
+    }
 
+    public void clearObservers() {
+        this.contactManager.deleteObservers();
+    }
+
+    public static void release() {
+        DiscoverySystem.instance = null;
+        ContactManager.release();
+        NetworkManager.release();
     }
 }

@@ -4,18 +4,19 @@ import java.net.*;
 public class NetworkManager {
     private static NetworkManager instance;
     private static final int PORT = 4269;
-    private static UDPServer udpServer;
-    private static DatagramSocket socket;
+    private UDPServer udpServer;
+    private DatagramSocket socket;
 
     private NetworkManager(int port) {
         try {
             //NetworkManager.socket = new DatagramSocket(NetworkManager.PORT);
-            NetworkManager.socket = new DatagramSocket(port);
+            this.socket = new DatagramSocket(port);
+//            System.out.println("Port network server : " + this.socket.getLocalPort());
         } catch (Exception e) {
             throw new RuntimeException("Could not create client Socket");
         }
-        NetworkManager.udpServer = new UDPServer(socket, this);
-        NetworkManager.udpServer.start();
+        this.udpServer = new UDPServer(socket, this);
+        this.udpServer.start();
     }
 
     public synchronized static NetworkManager getInstance(int port) {
@@ -37,7 +38,7 @@ public class NetworkManager {
         try {
             InetAddress address = InetAddress.getByName(ip);
             DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
-            NetworkManager.socket.send(packet);
+            this.socket.send(packet);
         } catch (Exception ignored) {
 
         }
@@ -52,7 +53,7 @@ public class NetworkManager {
         try {
             InetAddress address = InetAddress.getByName("255.255.255.255");
             DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
-            NetworkManager.socket.send(packet);
+            this.socket.send(packet);
         } catch (Exception ignored) {
 
         }
@@ -67,7 +68,17 @@ public class NetworkManager {
     }
 
     protected void finalize() {
-        NetworkManager.socket.close();
+        this.socket.close();
+        try {
+            this.udpServer.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void release() {
+        NetworkManager.instance.finalize();
+        NetworkManager.instance = null;
     }
 
 }

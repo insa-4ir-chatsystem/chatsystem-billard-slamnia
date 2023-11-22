@@ -10,7 +10,7 @@ public class UDPServer extends Thread {
 
     private boolean running;
     private final ContactManager contactMgr;
-    private final NetworkManager networkMgr;
+    private NetworkManager networkMgr;
     private final DatagramSocket socket;
 
     public UDPServer(DatagramSocket socket, NetworkManager netMgr) {
@@ -21,24 +21,25 @@ public class UDPServer extends Thread {
         this.running = true;
     }
 
+    /** Thread which listen to incoming traffic **/
     @Override
     public void run() {
-        boolean syncRunning;
-        synchronized (this) {
-            syncRunning = this.running;
-        }
         byte[] buf = new byte[256];
 
-        while (syncRunning) {
-            synchronized (this) {
-                syncRunning = this.running;
-            }
+        while (this.running) {
+            /** Creation of a new UDP PDU to receive incoming packets **/
             DatagramPacket inPacket = new DatagramPacket(buf, buf.length);
+//            System.out.println("Port Udp server : " + this.socket.getLocalPort());
             try {
                 socket.receive(inPacket);
-            } catch (IOException e) {
+            } catch (SocketException e) {
+                this.halt();
+                continue;
+            }catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
+            /** Extraction of the data from the incoming PDU **/
             String received = new String(inPacket.getData(), 0, inPacket.getLength());
             String ip = inPacket.getAddress().toString();
 
@@ -46,15 +47,20 @@ public class UDPServer extends Thread {
                 continue;
             }
 
+            /** Processing of the incoming data **/
             switch (received.charAt(0)) {
+                /** Disconnection of an Agent **/
                 case 'e' -> {
                     contactMgr.changeState(ContactState.DISCONNECTED, ip);
                 }
+                /** Connection of an Agent **/
                 case 'c' -> {
                     contactMgr.addContact(new Contact(ip));
                     networkMgr.send(ip, "p" + contactMgr.getPseudo());
                 }
+                /** New Pseudo of an Agent **/
                 case 'p' -> {
+//                    System.out.println("pseudo received : " +received.substring(1) );
                     contactMgr.changePseudo(received.substring(1), ip);
                 }
                 default -> {
@@ -62,10 +68,10 @@ public class UDPServer extends Thread {
                 }
             }
         }
-        socket.close();
     }
 
-    public synchronized void halt() {
+    public void halt() {
         this.running = false;
+        this.networkMgr = null;
     }
 }

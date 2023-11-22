@@ -41,7 +41,13 @@ public class NetworkManagerTests
 
     @AfterAll
     public static void cleanUpFinal() {
-
+        netManager = null;
+        NetworkManager.release();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @DisplayName("Test pour l'envoi d'un message")
