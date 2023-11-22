@@ -32,8 +32,8 @@ public class Main {
             System.out.println("Chose your actions: connect [c], change pseudo [p], disconnect [d], quit [q]");
             Scanner sc = new Scanner(System.in);
             String choice = sc.nextLine();
-            switch (choice.charAt(0)) {
-                case 'c' -> {
+            switch (choice) {
+                case "c" -> {
                     System.out.println("Please enter your pseudo");
                     try {
                         ds.connect(sc.nextLine());
@@ -42,7 +42,7 @@ public class Main {
                         System.out.println("A user already exists with this pseudo");
                     }
                 }
-                case 'p' -> {
+                case "p" -> {
                     if (connected) {
                         System.out.print("Please enter your pseudo: ");
                         try {
@@ -54,16 +54,17 @@ public class Main {
                         System.out.println("You are not yet connected");
                     }
                 }
-                case 'd' -> {
+                case "d" -> {
                     if (connected) {
                         ds.disconnect();
                     } else {
                         System.out.println("You were already disconnected");
                     }
                 }
-                case 'q' -> {
+                case "q" -> {
                     running = false;
                     if (connected) {
+                        System.out.println("Trying to disconnect");
                         ds.disconnect();
                     }
                 }
@@ -72,5 +73,7 @@ public class Main {
                 }
             }
         }
+        ds.clearObservers();
+        DiscoverySystem.release();
     }
 }

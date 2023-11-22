@@ -66,4 +66,10 @@ public class DiscoverySystem {
     public void clearObservers() {
         this.contactManager.deleteObservers();
     }
+
+    public static void release() {
+        DiscoverySystem.instance = null;
+        ContactManager.release();
+        NetworkManager.release();
+    }
 }

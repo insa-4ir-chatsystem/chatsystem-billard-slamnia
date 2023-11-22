@@ -14,6 +14,11 @@ public class ContactManager extends Observable {
         contacts = new ArrayList<>();
     }
 
+
+    public synchronized static void release() {
+        ContactManager.instance = null;
+    }
+
     public synchronized static ContactManager getInstance() {
         if (ContactManager.instance == null) {
             ContactManager.instance = new ContactManager();
