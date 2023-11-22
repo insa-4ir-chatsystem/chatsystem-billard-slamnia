@@ -21,11 +21,13 @@ public class UDPServer extends Thread {
         this.running = true;
     }
 
+    /** Thread which listen to incoming traffic **/
     @Override
     public void run() {
         byte[] buf = new byte[256];
 
         while (this.running) {
+            /** Creation of a new UDP PDU to receive incoming packets **/
             DatagramPacket inPacket = new DatagramPacket(buf, buf.length);
             System.out.println("Port Udp server : " + this.socket.getLocalPort());
             try {
@@ -36,6 +38,8 @@ public class UDPServer extends Thread {
             }catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
+            /** Extraction of the data from the incoming PDU **/
             String received = new String(inPacket.getData(), 0, inPacket.getLength());
             String ip = inPacket.getAddress().toString();
 
@@ -43,14 +47,18 @@ public class UDPServer extends Thread {
                 continue;
             }
 
+            /** Processing of the incoming data **/
             switch (received.charAt(0)) {
+                /** Disconnection of an Agent **/
                 case 'e' -> {
                     contactMgr.changeState(ContactState.DISCONNECTED, ip);
                 }
+                /** Connection of an Agent **/
                 case 'c' -> {
                     contactMgr.addContact(new Contact(ip));
                     networkMgr.send(ip, "p" + contactMgr.getPseudo());
                 }
+                /** New Pseudo of an Agent **/
                 case 'p' -> {
                     System.out.println("pseudo received : " +received.substring(1) );
                     contactMgr.changePseudo(received.substring(1), ip);
