@@ -113,7 +113,7 @@ public class DiscoverySystemTests {
         expectPacket("c");
         sendFromTestingNetwork("pCedric");
         expectPacket("pPierre");
-//        expectPacket("pValerie");
+        expectPacket("pValerie");
         try {
             t.join();
         } catch (InterruptedException e) {

@@ -64,7 +64,6 @@ public class Main {
                 case "q" -> {
                     running = false;
                     if (connected) {
-                        System.out.println("Trying to disconnect");
                         ds.disconnect();
                     }
                 }

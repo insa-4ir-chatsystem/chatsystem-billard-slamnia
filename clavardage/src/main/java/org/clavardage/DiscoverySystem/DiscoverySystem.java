@@ -51,8 +51,9 @@ public class DiscoverySystem {
         contactManager.setAllToDisconnected();
     }
 
-    public void changePseudo(String pseudo) throws ExistingPseudoException{
+    public void changePseudo(String pseudo) throws ExistingPseudoException {
         contactManager.setPseudo(pseudo);
+        networkManager.sendAll("p" + pseudo);
     }
 
     public void attachObserverToContactList(Observer o) {
