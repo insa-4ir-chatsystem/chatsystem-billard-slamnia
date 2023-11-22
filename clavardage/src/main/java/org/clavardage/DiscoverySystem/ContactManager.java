@@ -55,6 +55,7 @@ public class ContactManager extends Observable {
         }
         if (!contactPresent) {
             contacts.add(newContact);
+            this.setChanged();
             this.notifyObservers(this.contacts);
         }
     }
@@ -67,6 +68,7 @@ public class ContactManager extends Observable {
                 if (contact.getState() == ContactState.UNNAMED) {
                     contact.setState(ContactState.CONNECTED);
                 } else {
+                    this.setChanged();
                     this.notifyObservers(this.contacts);
                 }
                 changed = true;
@@ -81,6 +83,7 @@ public class ContactManager extends Observable {
         for (Contact contact : contacts) {
             if (contact.sameIP(ip)) {
                 contact.setState(state);
+                this.setChanged();
                 this.notifyObservers(this.contacts);
             }
         }
@@ -104,6 +107,7 @@ public class ContactManager extends Observable {
 
     public void resetList() {
         this.contacts.clear();
+        this.setChanged();
         this.notifyObservers(this.contacts);
     }
 }

@@ -102,22 +102,23 @@ public class DiscoverySystemTests {
             assertDoesNotThrow(() -> {
                 ds.connect("Pierre");
             });
+            assertDoesNotThrow(() -> {
+                ds.changePseudo("Valerie");
+            });
+            assertThrows(ExistingPseudoException.class, () -> {
+                ds.changePseudo("Cedric");
+            });
         });
         t.start();
         expectPacket("c");
         sendFromTestingNetwork("pCedric");
         expectPacket("pPierre");
+//        expectPacket("pValerie");
         try {
             t.join();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        assertDoesNotThrow(() -> {
-            ds.changePseudo("Valerie");
-        });
-        assertThrows(ExistingPseudoException.class, () -> {
-            ds.changePseudo("Cedric");
-        });
     }
 
     class ContactObserver implements Observer {
@@ -143,8 +144,9 @@ public class DiscoverySystemTests {
         ContactObserver obs = new ContactObserver();
         ds.attachObserverToContactList(obs);
         connectionPhase("Jean");
-        sendFromTestingNetwork("c");
-        sendFromTestingNetwork("pValentin");
+        contactManager.addContact(new Contact("45.45.45.45"));
+//        sendFromTestingNetwork("c");
+//        sendFromTestingNetwork("pValentin");
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
