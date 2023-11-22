@@ -60,9 +60,8 @@ public class ContactManager extends Observable {
         }
         if (!contactPresent) {
             contacts.add(newContact);
-            this.setChanged();
-            this.notifyObservers(this.contacts);
         }
+        this.updateObservers();
     }
 
     public synchronized void changePseudo(String name, String ip) {
@@ -72,9 +71,6 @@ public class ContactManager extends Observable {
                 contact.setName(name);
                 if (contact.getState() == ContactState.UNNAMED) {
                     contact.setState(ContactState.CONNECTED);
-                } else {
-                    this.setChanged();
-                    this.notifyObservers(this.contacts);
                 }
                 changed = true;
             }
@@ -82,22 +78,23 @@ public class ContactManager extends Observable {
         if (!changed) {
             this.addContact(new Contact(name, ip));
         }
+        this.updateObservers();
     }
 
     public synchronized void changeState(ContactState state, String ip) {
         for (Contact contact : contacts) {
             if (contact.sameIP(ip)) {
                 contact.setState(state);
-                this.setChanged();
-                this.notifyObservers(this.contacts);
             }
         }
+        this.updateObservers();
     }
 
     public synchronized void setAllToDisconnected() {
         for (Contact contact : this.contacts) {
             contact.setState(ContactState.DISCONNECTED);
         }
+        this.updateObservers();
     }
 
     public ArrayList<Contact> getConnectedContacts() {
@@ -110,9 +107,13 @@ public class ContactManager extends Observable {
         return result;
     }
 
-    public void resetList() {
-        this.contacts.clear();
+    public void updateObservers() {
         this.setChanged();
         this.notifyObservers(this.contacts);
+    }
+
+    public void resetList() {
+        this.contacts.clear();
+        this.updateObservers();
     }
 }
