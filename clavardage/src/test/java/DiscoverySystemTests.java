@@ -8,6 +8,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DiscoverySystemTests {
@@ -87,7 +89,9 @@ public class DiscoverySystemTests {
     @DisplayName("Test pour la déconnexion de l'agent")
     @Test
     public void disconnectionTest() {
-
+        connectionPhase("Josianne");
+        ds.disconnect();
+        expectPacket("e");
     }
 
 
@@ -95,10 +99,14 @@ public class DiscoverySystemTests {
     @Test
     public void changePseudoTest() {
         Thread t = new Thread(() -> {
-            this.connectionPhase("Pierre");
+            assertDoesNotThrow(() -> {
+                ds.connect("Pierre");
+            });
         });
         t.start();
+        expectPacket("c");
         sendFromTestingNetwork("pCedric");
+        expectPacket("pPierre");
         try {
             t.join();
         } catch (InterruptedException e) {
@@ -112,9 +120,36 @@ public class DiscoverySystemTests {
         });
     }
 
+    class ContactObserver implements Observer {
+        private boolean status;
+
+        public ContactObserver() {
+            this.status = false;
+        }
+
+        @Override
+        public void update(Observable observable, Object o) {
+            this.status = true;
+        }
+
+        public boolean getStatus() {
+            return this.status;
+        }
+    }
+
     @DisplayName("Test pour la notification des Observers")
     @Test
     public void notifyTest() {
-
+        ContactObserver obs = new ContactObserver();
+        ds.attachObserverToContactList(obs);
+        connectionPhase("Jean");
+        sendFromTestingNetwork("c");
+        sendFromTestingNetwork("pValentin");
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        assertTrue(obs.getStatus());
     }
 }
