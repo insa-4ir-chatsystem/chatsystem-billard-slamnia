@@ -4,6 +4,21 @@ This is a distributed chat system allowing multiple users to chat on the same ne
 
 ## How to run
 
-Before anything, **complete this README** 
+first clone the repository:
+
+```sh
+git clone https://github.com/insa-4ir-chatsystem/chatsystem-billard-slamnia.git
+```
+
+ensuite il faut build le package:
+
+```sh
+mvn package -f pom.xml
+```
+
+To run the example, type:
+```sh
+java -jar target/clavardage-1.0-SNAPSHOT.jar
+```
 
 
