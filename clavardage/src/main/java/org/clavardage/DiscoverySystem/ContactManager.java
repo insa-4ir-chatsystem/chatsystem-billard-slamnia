@@ -86,6 +86,12 @@ public class ContactManager extends Observable {
         }
     }
 
+    public synchronized void setAllToDisconnected() {
+        for (Contact contact : this.contacts) {
+            contact.setState(ContactState.DISCONNECTED);
+        }
+    }
+
     public ArrayList<Contact> getConnectedContacts() {
         ArrayList<Contact> result = new ArrayList<>();
         for (Contact contact : contacts) {

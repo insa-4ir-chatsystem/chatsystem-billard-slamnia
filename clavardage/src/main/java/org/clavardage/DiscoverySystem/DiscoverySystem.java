@@ -45,7 +45,8 @@ public class DiscoverySystem {
     }
 
     public void disconnect() {
-
+        networkManager.sendAll("e");
+        contactManager.setAllToDisconnected();
     }
 
     public void changePseudo(String pseudo) throws ExistingPseudoException{
