@@ -36,6 +36,14 @@
             <artifactId>javafx-swing</artifactId>
             <version>22-ea+11</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hsqldb/hsqldb -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.7.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
