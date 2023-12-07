@@ -24,4 +24,43 @@ public class MessagesBDD {
         }
         return MessagesBDD.instance;
     }
+
+    public void recreateDatabase() {
+        try {
+            this.dropDatabase();
+            this.createDatabase();
+            this.fillDatabase();
+        } catch (SQLException e) {
+            throw new RuntimeException("Could not recreate Database");
+        }
+    }
+
+    public void dropDatabase() {
+        Statement statement;
+        statement = this.connection.createStatement();
+        statement.addBatch("DROP TABLE contacts;");
+        statement.addBatch("DROP TABLE messages;");
+        statement.executeBatch();
+        statement.close();
+    }
+
+    public void createDatabase() {
+        Statement statement;
+        statement = this.connection.createStatement();
+        statement.addBatch("CREATE TABLE contacts(id int primary key auto_increment, " +
+                "name varchar(50) not null, " +
+                "ip varchar(15) not null;");
+        statement.addBatch("CREATE TABLE messages(id int primary key aute_increment, " +
+                "TEXT message," +
+                "VARCHAR(200) fileName," +
+                "BLOB fileContent," +
+                "type int not null check (type in (1,2,3)))")
+        statement.executeBatch();
+        statement.close();
+
+    }
+
+    public void fillDatabase() {
+
+    }
 }
