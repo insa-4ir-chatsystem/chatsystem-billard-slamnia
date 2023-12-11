@@ -40,4 +40,8 @@ public class Message {
     public File getFile() {
         return this.file;
     }
+
+    public MessageType getType() {
+        return this.type;
+    }
 }

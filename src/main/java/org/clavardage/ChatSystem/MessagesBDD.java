@@ -1,6 +1,7 @@
 package org.clavardage.ChatSystem;
 
 import java.sql.*;
+import org.clavardage.DiscoverySystem.Contact;
 
 public class MessagesBDD {
     private static MessagesBDD instance;
@@ -60,7 +61,31 @@ public class MessagesBDD {
 
     }
 
-    public void fillDatabase() throws SQLException {
+    public void addContact(Contact contact) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        statement.addBatch("INSERT INTO contacts (name, ip) VALUES (\"" +
+                           contact.getName() + "\", \"" + contact.getIp() + "\");");
+        statement.executeBatch();
+        statement.close();
+    }
 
+    // public void addMessage(Message msg) {
+    //     Statement statement;
+    //     statement = this.connection.createStatement();
+    //     switch (msg.getType()) {
+    //         case MessageType.TEXT -> {
+    //             statement.addBatch("INSERT INTO ")
+    //         };
+    //         case MessageType.FILE -> {};
+    //         case MessageType.TEXT_AND_FILE -> {};
+    //     };
+    //     statement.executeBatch();
+    //     statement.close();
+    // }
+
+    public void fillDatabase() throws SQLException {
+        this.addContact(new Contact("Toto", "1.2.3.4"));
+        this.addContact(new Contact("Frank", "1.2.3.4"));
+        this.addContact(new Contact("Zoé", "1.2.3.4"));
     }
 }
