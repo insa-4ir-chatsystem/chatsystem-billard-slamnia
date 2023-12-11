@@ -35,7 +35,7 @@ public class MessagesBDD {
         }
     }
 
-    public void dropDatabase() {
+    public void dropDatabase() throws SQLException {
         Statement statement;
         statement = this.connection.createStatement();
         statement.addBatch("DROP TABLE contacts;");
@@ -44,7 +44,7 @@ public class MessagesBDD {
         statement.close();
     }
 
-    public void createDatabase() {
+    public void createDatabase() throws SQLException {
         Statement statement;
         statement = this.connection.createStatement();
         statement.addBatch("CREATE TABLE contacts(id int primary key auto_increment, " +
@@ -60,7 +60,7 @@ public class MessagesBDD {
 
     }
 
-    public void fillDatabase() {
+    public void fillDatabase() throws SQLException {
 
     }
 }

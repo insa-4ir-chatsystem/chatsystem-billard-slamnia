@@ -10,9 +10,7 @@ public class UI extends JFrame implements ActionListener {
     JButton connectButton;
 
     public UI() {
-
         pseudoField = new JTextField("Pseudonym",15);
-
         connectButton = new JButton("Connect");
 
         panel = new JPanel(new GridLayout(3, 1));
@@ -34,8 +32,8 @@ public class UI extends JFrame implements ActionListener {
 
             page.setVisible(true);
 
-            JLabel wel_label = new JLabel("Welcome "+userValue);
-            page.getContentPane().add(wel_label);
+            JLabel welLabel = new JLabel("Welcome "+userValue);
+            page.getContentPane().add(welLabel);
         }
         else {
             System.out.println("Please enter another Pseudonym");
