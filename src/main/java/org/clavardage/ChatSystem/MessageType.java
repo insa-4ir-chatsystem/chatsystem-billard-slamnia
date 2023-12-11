@@ -1,5 +1,9 @@
 package org.clavardage.ChatSystem;
 
+import org.clavardage.ChatSystem.InvalidMessageTypeException;
+
+import org.clavardage.ChatSystem.MessageType;
+
 public enum MessageType {
     TEXT(1),
     FILE(2),
@@ -7,16 +11,16 @@ public enum MessageType {
 
     private int id;
 
-    public MessageType(int id) {
+    MessageType(int id) {
         this.id = id;
     }
 
-    public static MessageType fromInt(int id) throws InvalidMessageTypeException{
+    public static MessageType fromInt(int id) throws InvalidMessageTypeException {
         return switch (id) {
-            case 1 -> UserType.Voluntary;
-            case 2 -> UserType.Asker;
-            case 3 -> UserType.Checker;
-            default -> throw new InvalidMessageTypeException;
+            case 1 -> MessageType.TEXT;
+            case 2 -> MessageType.FILE;
+            case 3 -> MessageType.TEXT_AND_FILE;
+            default -> throw new InvalidMessageTypeException();
         };
     }
 

@@ -54,7 +54,7 @@ public class MessagesBDD {
                 "TEXT message," +
                 "VARCHAR(200) fileName," +
                 "BLOB fileContent," +
-                "type int not null check (type in (1,2,3)))")
+                "type int not null check (type in (1,2,3)))");
         statement.executeBatch();
         statement.close();
 

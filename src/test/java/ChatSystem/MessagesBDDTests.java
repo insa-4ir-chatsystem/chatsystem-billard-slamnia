@@ -11,4 +11,9 @@ public class MessagesBDDTests {
     public static void setUp() {
         MessagesBDDTests.bdd = MessagesBDD.getInstance()
     }
+
+    @AfterEach
+    public static void cleanUp() {
+        MessagesBDDTests.bdd.recreateDatabase();
+    }
 }

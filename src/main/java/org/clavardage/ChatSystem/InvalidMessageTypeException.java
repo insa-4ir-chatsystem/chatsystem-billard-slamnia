@@ -1,3 +1,4 @@
-public class InvalidMessageTypeException extends Exception {
+package org.clavardage;
 
+public class InvalidMessageTypeException extends Exception {
 }
