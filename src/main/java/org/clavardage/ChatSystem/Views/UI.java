@@ -1,5 +1,8 @@
 package org.clavardage.ChatSystem.Views;
 
+import org.clavardage.DiscoverySystem.Contact;
+import org.clavardage.DiscoverySystem.ContactManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -7,8 +10,8 @@ import java.awt.event.*;
 public class UI extends JFrame implements ActionListener {
     private CardLayout windowChoice;
     private Container container;
-    private ConnectionView con;
-    private MessagesView msg;
+    private ConnectionView connection;
+    private ContactView contacts;
     public UI() {
         /** Parameters of the window **/
         setTitle("Chat System");
@@ -23,16 +26,16 @@ public class UI extends JFrame implements ActionListener {
         this.container = this.getContentPane();
         this.container.setLayout(this.windowChoice);
 
-        this.con = new ConnectionView(this);
-        this.container.add(con);
+        this.connection = new ConnectionView(this);
+        this.container.add(connection);
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
         switch (ae.getActionCommand()) {
             case "login" -> {
-                this.msg = new MessagesView(this);
-                this.container.add(msg);
+                this.contacts = new ContactView(this);
+                this.container.add(contacts);
                 this.windowChoice.next(this.container);
             }
             case "logout" -> {
@@ -43,6 +46,7 @@ public class UI extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         try {
+            ContactManager.getInstance().addContact(new Contact("nom","@ip"));
             UI form = new UI();
             form.setVisible(true);
         }catch(Exception e) {

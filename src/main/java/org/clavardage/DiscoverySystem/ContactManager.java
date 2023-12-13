@@ -14,7 +14,6 @@ public class ContactManager extends Observable {
         contacts = new ArrayList<>();
     }
 
-
     public synchronized static void release() {
         ContactManager.instance = null;
     }
@@ -28,7 +27,6 @@ public class ContactManager extends Observable {
 
     public void setPseudo(String pseudo) throws ExistingPseudoException {
         for (Contact contact : contacts) {
-//            System.out.println(contact.getName());
             if (contact.getState() == ContactState.CONNECTED && contact.getName().equals(pseudo)) {
                 throw new ExistingPseudoException("Pseudonym already existing");
             }
@@ -45,11 +43,7 @@ public class ContactManager extends Observable {
         for (Contact contact : contacts) {
             if (contact.sameIP(newContact.getIp())) {
                 if (newContact.getName().isEmpty()) {
-                    if (contact.getName().isEmpty()) {
-                        contact.setState(ContactState.UNNAMED);
-                    } else {
-                        contact.setState(ContactState.CONNECTED);
-                    }
+                    contact.setState(ContactState.UNNAMED);
                 } else {
                     contact.setState(ContactState.CONNECTED);
                     contact.setName(newContact.getName());

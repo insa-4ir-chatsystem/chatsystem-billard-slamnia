@@ -41,7 +41,6 @@ public class DiscoverySystem {
             throw new RuntimeException(e);
         }
 
-
         contactManager.setPseudo(pseudo);
         networkManager.sendAll("p"+pseudo);
     }
