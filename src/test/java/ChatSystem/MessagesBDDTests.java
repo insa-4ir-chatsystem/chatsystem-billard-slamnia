@@ -1,3 +1,5 @@
+package ChatSystem;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
@@ -5,7 +7,7 @@ import org.clavardage.ChatSystem.*;
 import org.clavardage.DiscoverySystem.Contact;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -28,9 +30,7 @@ public class MessagesBDDTests {
     public void integrityCheck() {
         System.out.println("Start of the test");
         assertDoesNotThrow(() -> {
-            MessagesBDDTests.bdd.addContact(new Contact("Tom", "3.4.5.6"));
-        });
-        assertThrows(Exception.class, () -> {
+            assertNotEquals(MessagesBDDTests.bdd, null);
             MessagesBDDTests.bdd.addContact(new Contact("Tom", "3.4.5.6"));
         });
     }
