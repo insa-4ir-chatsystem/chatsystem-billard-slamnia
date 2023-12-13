@@ -64,6 +64,15 @@ public class ContactManager extends Observable {
         this.updateObservers();
     }
 
+    public synchronized Contact getContact(String ip) throws NoContactFoundException{
+        for (Contact contact: this.contacts) {
+            if (contact.sameIP(ip)) {
+                return contact;
+            }
+        }
+        throw new NoContactFoundException();
+    }
+
     public synchronized void changePseudo(String name, String ip) {
         boolean changed = false;
         for (Contact contact : contacts) {

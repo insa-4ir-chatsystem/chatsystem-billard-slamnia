@@ -1,6 +1,8 @@
 package org.clavardage.ChatSystem;
 
 import java.sql.*;
+import java.sql.Connection;
+
 import org.clavardage.DiscoverySystem.Contact;
 
 public class MessagesBDD {
@@ -10,12 +12,17 @@ public class MessagesBDD {
     private Statement statement;
     private MessagesBDD() {
         try {
-//            Class.forName("org.hsqldb.jdbcDriver");
-            this.connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306/dbname", "user", "password");
-//        } catch (ClassNotFoundException e) {
-//            System.err.println("There's a problem with the HSQLDB package");
-        } catch (SQLException e) {
-            System.err.println("No Database found");
+            Class.forName("org.hsqldb.jdbcDriver");
+//            this.connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306/dbname", "user", "password");
+        } catch (ClassNotFoundException e) {
+            System.err.println("There's a problem with the HSQLDB package");
+            try {
+                this.connection = DriverManager.getConnection("");
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+//        } catch (SQLException e) {
+//            System.err.println("No Database found");
         }
     }
 
