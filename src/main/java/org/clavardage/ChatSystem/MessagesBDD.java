@@ -10,10 +10,10 @@ public class MessagesBDD {
     private Statement statement;
     private MessagesBDD() {
         try {
-            Class.forName("org.hsqldb.jdbcDriver");
-            this.connection = DriverManager.getConnection("");
-        } catch (ClassNotFoundException e) {
-            System.err.println("There's a problem with the HSQLDB package");
+//            Class.forName("org.hsqldb.jdbcDriver");
+            this.connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306/dbname", "user", "password");
+//        } catch (ClassNotFoundException e) {
+//            System.err.println("There's a problem with the HSQLDB package");
         } catch (SQLException e) {
             System.err.println("No Database found");
         }

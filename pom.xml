@@ -38,11 +38,17 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.hsqldb/hsqldb -->
+<!--        <dependency>-->
+<!--            <groupId>org.hsqldb</groupId>-->
+<!--            <artifactId>hsqldb</artifactId>-->
+<!--            <version>2.7.2</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
         <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>2.7.2</version>
-            <scope>test</scope>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>3.3.1</version>
         </dependency>
     </dependencies>
 

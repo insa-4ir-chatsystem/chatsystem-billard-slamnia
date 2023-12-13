@@ -1,6 +1,7 @@
 # Distributed Chat System
 
 This is a distributed chat system allowing multiple users to chat on the same network in real time.
+This program needs to have hsqldb installed alongside it.
 
 ## How to run
 
