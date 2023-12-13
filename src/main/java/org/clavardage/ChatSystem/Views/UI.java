@@ -1,4 +1,4 @@
-package org.clavardage;
+package org.clavardage.ChatSystem.Views;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,28 +7,37 @@ import java.awt.event.*;
 public class UI extends JFrame implements ActionListener {
     private CardLayout windowChoice;
     private Container container;
-    private JPanel panel;
+    private ConnectionView con;
+    private MessagesView msg;
     public UI() {
-
+        /** Parameters of the window **/
         setTitle("Chat System");
         setSize(800,400);
         WindowListener l = new WindowAdapter() {
             public void windowClosing(WindowEvent e){System.exit(0);}
         };
+        addWindowListener(l);
 
+        /** Content of the window **/
         this.windowChoice = new CardLayout();
         this.container = this.getContentPane();
         this.container.setLayout(this.windowChoice);
 
-        ConnectionView con = new ConnectionView(this);
-
-        container.add(con);
+        this.con = new ConnectionView(this);
+        this.container.add(con);
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
         switch (ae.getActionCommand()) {
-            case "login" -> {this.windowChoice.next(this.container);}
+            case "login" -> {
+                this.msg = new MessagesView(this);
+                this.container.add(msg);
+                this.windowChoice.next(this.container);
+            }
+            case "logout" -> {
+                this.windowChoice.previous(this.container);
+            }
         }
     }
 
