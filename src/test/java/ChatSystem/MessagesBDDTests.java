@@ -20,7 +20,7 @@ public class MessagesBDDTests {
         MessagesBDDTests.bdd = MessagesBDD.getInstance();
     }
 
-    @AfterEach
+    @BeforeEach
     public void cleanUp() {
         MessagesBDDTests.bdd.recreateDatabase();
     }

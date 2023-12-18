@@ -33,7 +33,7 @@ public class Connection extends Thread {
             try {
                 inputline = in.readLine();
                 synchronized (this) {
-                    this.hist.addMessage(new Message(inputline, this.hist.getContact()));
+                    this.hist.addMessage(new Message(inputline, this.hist.getContact(), Origin.REMOTE));
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

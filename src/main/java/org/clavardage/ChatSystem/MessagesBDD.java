@@ -12,17 +12,11 @@ public class MessagesBDD {
     private Statement statement;
     private MessagesBDD() {
         try {
-            Class.forName("org.hsqldb.jdbcDriver");
-//            this.connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306/dbname", "user", "password");
-        } catch (ClassNotFoundException e) {
-            System.err.println("There's a problem with the HSQLDB package");
-            try {
-                this.connection = DriverManager.getConnection("");
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-//        } catch (SQLException e) {
-//            System.err.println("No Database found");
+//            Class.forName("org.hsqldb.jdbcDriver");
+            String home_dir = System.getProperty("user.home");
+            this.connection = DriverManager.getConnection("jdbc:sqlite:" + home_dir + "/.cache/chatsystem/history.db");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -36,35 +30,61 @@ public class MessagesBDD {
     public void recreateDatabase() {
         try {
             this.dropDatabase();
-            this.createDatabase();
+        } catch (SQLException e) {
+            throw new RuntimeException("Could not drop Database");
+        }
+        this.createDatabase();
+        try {
             this.fillDatabase();
         } catch (SQLException e) {
-            throw new RuntimeException("Could not recreate Database");
+            throw new RuntimeException("Could not fill Database");
         }
     }
 
     public void dropDatabase() throws SQLException {
         Statement statement;
         statement = this.connection.createStatement();
-        statement.addBatch("DROP TABLE contacts;");
         statement.addBatch("DROP TABLE messages;");
+        statement.addBatch("DROP TABLE contacts;");
         statement.executeBatch();
         statement.close();
     }
 
-    public void createDatabase() throws SQLException {
+    public void createDatabase() {
         Statement statement;
-        statement = this.connection.createStatement();
-        statement.addBatch("CREATE TABLE contacts(id int primary key auto_increment, " +
-                "name varchar(50) not null, " +
-                "ip varchar(15) not null;");
-        statement.addBatch("CREATE TABLE messages(id int primary key aute_increment, " +
-                "TEXT message," +
-                "VARCHAR(200) fileName," +
-                "BLOB fileContent," +
-                "type int not null check (type in (1,2,3)))");
-        statement.executeBatch();
-        statement.close();
+        try {
+            statement = this.connection.createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            statement.addBatch("CREATE TABLE contacts(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "name VARCHAR(50) NOT NULL, " +
+                    "ip VARCHAR(15) NOT NULL);");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+        statement.addBatch("CREATE TABLE messages(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "message TEXT ," +
+                "fileName TEXT ," +
+                "fileContent BLOB ," +
+                "type INTEGER NOT NULL CHECK (type IN (1,2,3)), " +
+                "contact INTEGER," +
+                "FOREIGN KEY (contact) REFERENCES contacts(id));");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            statement.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            statement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -76,23 +96,38 @@ public class MessagesBDD {
         statement.close();
     }
 
-    // public void addMessage(Message msg) {
-    //     Statement statement;
-    //     statement = this.connection.createStatement();
-    //     switch (msg.getType()) {
-    //         case MessageType.TEXT -> {
-    //             statement.addBatch("INSERT INTO ")
-    //         };
-    //         case MessageType.FILE -> {};
-    //         case MessageType.TEXT_AND_FILE -> {};
-    //     };
-    //     statement.executeBatch();
-    //     statement.close();
-    // }
+    private int getContactId(Contact contact) throws SQLException, UserUnobtainableException {
+        Statement statement = this.connection.createStatement();
+        ResultSet res = statement.executeQuery("SELECT id FROM contacts WHERE ip = '" + contact.getIp() + "';");
+        res.first();
+        if (res.isLast()) {
+            int id = res.getInt("id");
+            statement.close();
+            return id;
+        } else {
+            statement.close();
+            throw new UserUnobtainableException();
+        }
+//        statement.executeBatch();
+    }
+
+     public void addMessage(Message msg) throws SQLException{
+         Statement statement;
+         statement = this.connection.createStatement();
+         switch (msg.getType()) {
+             case TEXT -> {
+                 statement.addBatch("INSERT INTO ");
+             }
+             case FILE -> {}
+             case TEXT_AND_FILE -> {}
+         };
+         statement.executeBatch();
+         statement.close();
+     }
 
     public void fillDatabase() throws SQLException {
         this.addContact(new Contact("Toto", "1.2.3.4"));
-        this.addContact(new Contact("Frank", "1.2.3.4"));
-        this.addContact(new Contact("Zoé", "1.2.3.4"));
+        this.addContact(new Contact("Frank", "1.22.3.4"));
+        this.addContact(new Contact("Zoé", "1.2.33.4"));
     }
 }
