@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class MessagesMgr {
     static private MessagesMgr instance = null;
+    private MessagesBDD msgBdd = null;
 
     private ArrayList<MessagesHistory> histories;
 
@@ -17,6 +18,7 @@ public class MessagesMgr {
     }
     private MessagesMgr() {
         this.histories = new ArrayList<>();
+        this.msgBdd = MessagesBDD.getInstance();
     }
 
     public MessagesHistory getHistory(Contact contact) {
@@ -27,6 +29,7 @@ public class MessagesMgr {
         }
         MessagesHistory history = new MessagesHistory(contact);
         this.histories.add(history);
+        this.msgBdd.fillHistory(history);
         return history;
     }
 

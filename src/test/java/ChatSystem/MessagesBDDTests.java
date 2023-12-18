@@ -25,13 +25,21 @@ public class MessagesBDDTests {
         MessagesBDDTests.bdd.recreateDatabase();
     }
 
-    @DisplayName("Verify Integrity of Database")
+    @DisplayName("Add Contact Test")
     @Test
-    public void integrityCheck() {
-        System.out.println("Start of the test");
+    public void addContact() {
         assertDoesNotThrow(() -> {
-            assertNotEquals(MessagesBDDTests.bdd, null);
             MessagesBDDTests.bdd.addContact(new Contact("Tom", "3.4.5.6"));
+        });
+    }
+
+    @DisplayName("Create Messages Test")
+    @Test
+    public void createMessages() {
+        Contact tom = new Contact("Tom", "3.4.5.2");
+        assertDoesNotThrow(() -> {
+            MessagesBDDTests.bdd.addContact(new Contact("Tom", "3.4.5.6"));
+            MessagesBDDTests.bdd.addMessage(new Message("Coucou", tom, Origin.LOCAL));
         });
     }
 }
