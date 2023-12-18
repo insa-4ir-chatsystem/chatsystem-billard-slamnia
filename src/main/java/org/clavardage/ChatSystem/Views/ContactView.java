@@ -5,6 +5,7 @@ import org.clavardage.DiscoverySystem.ContactManager;
 import org.clavardage.DiscoverySystem.DiscoverySystem;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -12,31 +13,44 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class ContactView extends JPanel implements Observer{
-    private JList contactList;
-    private JButton logoutButton;
-    private ArrayList<Contact> contacts;
-    public ContactView(ActionListener listener) {
-        this.logoutButton = new JButton("Log out");
-        this.logoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                listener.actionPerformed(new ActionEvent(this, 0, "logout"));
-                DiscoverySystem.getInstance().disconnect();
-            }
-        });
+    private JScrollPane scrollPane;
+    private JList contactListDisplay;
+    private DefaultListModel contactList;
+    private DiscoverySystem ds;
+    private MessageView msgView;
 
-        this.contacts = new ArrayList<>();
-        this.contactList = new JList(contacts.toArray());
-        this.add(this.contactList);
-        this.add(this.logoutButton);
+    public ContactView(MessageView msgView) {
+        this.msgView = msgView;
 
-        ContactManager.getInstance().addContact(new Contact("nom2", "10.69.69.68"));
+        this.contactList = new DefaultListModel<String>();
+
+        this.ds = DiscoverySystem.getInstance();
+        this.ds.attachObserverToContactList(this);
+        this.ds.updateObservers();
+
+        this.contactListDisplay = new JList(contactList);
+        this.contactListDisplay.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        this.contactListDisplay.setVisibleRowCount(25);
+
+        this.scrollPane = new JScrollPane(contactListDisplay);
+        this.scrollPane.setPreferredSize(new Dimension(250, 80));
+
+        this.add(this.scrollPane);
+
+        ContactManager.getInstance().addContact(new Contact("AAA","IP"));
     }
 
     @Override
     public void update(Observable observable, Object o) {
-        this.contacts = (ArrayList<Contact>) o;
-        this.contactList = new JList(contacts.toArray());
-        this.add(this.contactList);
+        ArrayList<Contact> contacts = (ArrayList<Contact>) o;
+        this.contactList.removeAllElements();
+        for(Contact contact : contacts) {
+            this.contactList.addElement(contact.getName());
+        }
+    }
+
+    @Override
+    protected void finalize() {
+        this.ds.deleteObserver(this);
     }
 }

@@ -8,12 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ConnectionView extends JPanel {
-
     private final JTextField pseudoField;
     private JButton loginButton;
 
     public ConnectionView(ActionListener listener) {
         this.pseudoField = new JTextField("Pseudonym",15);
+
         this.loginButton = new JButton("Log in");
         this.loginButton.addActionListener(new ActionListener() {
             @Override
