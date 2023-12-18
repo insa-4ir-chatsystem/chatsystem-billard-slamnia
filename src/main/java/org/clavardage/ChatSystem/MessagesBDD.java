@@ -70,8 +70,9 @@ public class MessagesBDD {
                 "fileName TEXT ," +
                 "fileContent BLOB ," +
                 "type INTEGER NOT NULL CHECK (type IN (1,2,3)), " +
-                "contact INTEGER," +
-                "FOREIGN KEY (contact) REFERENCES contacts(id));");
+                "origin INTEGER NOT NULL CHECK (type IN (1,2))," +
+                "contactId INTEGER," +
+                "FOREIGN KEY (contactId) REFERENCES contacts(id));");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -111,18 +112,44 @@ public class MessagesBDD {
 //        statement.executeBatch();
     }
 
-     public void addMessage(Message msg) throws SQLException{
-         Statement statement;
-         statement = this.connection.createStatement();
+     public void addMessage(Message msg) throws SQLException, UserUnobtainableException {
+         Statement statement = this.connection.createStatement();
          switch (msg.getType()) {
              case TEXT -> {
-                 statement.addBatch("INSERT INTO ");
+                 int id = this.getContactId(msg.getContact());
+                 statement.addBatch("INSERT INTO messages (message, type, origin, contactId) VALUES (\"" +
+                         msg.getMessage() + "\", " + msg.getType().getId() + "," + msg.getOrigin().getId() +
+                         "," + id + ");");
              }
              case FILE -> {}
              case TEXT_AND_FILE -> {}
          };
          statement.executeBatch();
          statement.close();
+     }
+
+     public void fillHistory(MessagesHistory history) {
+         try {
+             int id = this.getContactId(history.getContact());
+             Statement statement = this.connection.createStatement();
+             ResultSet res = statement.executeQuery("SELECT message, filename, fileContent, type, origin FROM messages WHERE contactId = " + id + ";");
+             while (res.next()) {
+                 switch (MessageType.fromInt(res.getInt("type"))) {
+                     case FILE -> {}
+                     case TEXT_AND_FILE -> {}
+                     case TEXT -> {history.addMessage(
+                             new Message(
+                                     res.getString("message"),
+                                     history.getContact(),
+                                     Origin.fromInt(res.getInt("origin"))
+                             )
+                     );}
+                 }
+             }
+             statement.close();
+         } catch (SQLException | UserUnobtainableException | InvalidMessageTypeException | InvalidOriginException e) {
+             throw new RuntimeException(e);
+         }
      }
 
     public void fillDatabase() throws SQLException {
