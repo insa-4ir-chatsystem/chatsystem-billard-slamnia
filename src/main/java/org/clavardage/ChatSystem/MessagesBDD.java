@@ -97,17 +97,29 @@ public class MessagesBDD {
         statement.close();
     }
 
-    private int getContactId(Contact contact) throws SQLException, UserUnobtainableException {
-        Statement statement = this.connection.createStatement();
-        ResultSet res = statement.executeQuery("SELECT id FROM contacts WHERE ip = '" + contact.getIp() + "';");
-        res.first();
-        if (res.isLast()) {
-            int id = res.getInt("id");
-            statement.close();
-            return id;
-        } else {
-            statement.close();
-            throw new UserUnobtainableException();
+    private int getContactId(Contact contact) throws UserUnobtainableException {
+        Statement statement = null;
+        ResultSet res = null;
+        try {
+            statement = this.connection.createStatement();
+            res = statement.executeQuery("SELECT id FROM contacts WHERE ip = '" + contact.getIp() + "';");
+            if (res.next()) {
+                int id = res.getInt("id");
+                statement.close();
+                if (!res.next()) {
+                    return id;
+                } else {
+                    statement.close();
+                    System.out.println("This is not the last id");
+                    throw new UserUnobtainableException();
+                }
+            } else {
+                statement.close();
+                System.out.println("There is no id");
+                throw new UserUnobtainableException();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 //        statement.executeBatch();
     }

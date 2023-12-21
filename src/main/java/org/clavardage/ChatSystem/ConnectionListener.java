@@ -6,17 +6,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
-import java.util.Observable;
 
-public class Connection extends Thread {
+public class ConnectionListener extends Thread {
 
 
     private Socket sock;
-    private MessagesHistory hist;
+    private MessagesMgr  msgMgr;
+    private Contact contact;
     private boolean running = true;
-    public Connection(Socket sock, MessagesHistory msgHist) {
+    public ConnectionListener(Socket sock, Contact contact) {
         this.sock = sock;
-        this.hist = msgHist;
+        this.msgMgr = MessagesMgr.getInstance();
+        this.contact = contact;
     }
 
     @Override
@@ -33,7 +34,8 @@ public class Connection extends Thread {
             try {
                 inputline = in.readLine();
                 synchronized (this) {
-                    this.hist.addMessage(new Message(inputline, this.hist.getContact(), Origin.REMOTE));
+                    // TODO: make this more efficient, because this has to find the right history
+                    this.msgMgr.addMessage(new Message(inputline, this.contact, Origin.REMOTE));
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
