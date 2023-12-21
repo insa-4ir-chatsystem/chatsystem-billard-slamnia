@@ -4,13 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class UI extends JFrame implements ActionListener {
+public class MainWindow extends JFrame implements ActionListener {
     private CardLayout windowChoice;
     private Container container;
     private ConnectionView connectionView;
     private ConnectedView connectedView;
 
-    public UI() {
+    public MainWindow() {
         /** Parameters of the window **/
         setTitle("Chat System");
         setSize(1200,600);
@@ -25,7 +25,7 @@ public class UI extends JFrame implements ActionListener {
         this.container.setLayout(this.windowChoice);
 
         this.connectionView = new ConnectionView(this);
-        this.container.add(connectionView);
+        this.container.add(connectionView.$$$getRootComponent$$$());
     }
 
     @Override
@@ -33,18 +33,19 @@ public class UI extends JFrame implements ActionListener {
         switch (ae.getActionCommand()) {
             case "login" -> {
                 this.connectedView = new ConnectedView(this);
-                this.container.add(connectedView);
+                this.container.add(connectedView.$$$getRootComponent$$$());
                 this.windowChoice.next(this.container);
             }
             case "logout" -> {
                 this.windowChoice.previous(this.container);
+                this.connectedView.clearObserver();
             }
         }
     }
 
     public static void main(String[] args) {
         try {
-            UI form = new UI();
+            MainWindow form = new MainWindow();
             form.setVisible(true);
 
 
