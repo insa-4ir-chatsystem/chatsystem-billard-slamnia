@@ -60,8 +60,9 @@ public class UDPServer extends Thread {
                 }
                 /** New Pseudo of an Agent **/
                 case 'p' -> {
-//                    System.out.println("pseudo received : " +received.substring(1) );
-                    contactMgr.changePseudo(received.substring(1), ip);
+                    String name = received.substring(1);
+                    if (name.equals(contactMgr.getPseudo())) {continue;}
+                    contactMgr.changePseudo(name, ip);
                 }
                 default -> {
                     continue;

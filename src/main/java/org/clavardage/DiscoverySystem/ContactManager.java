@@ -74,6 +74,8 @@ public class ContactManager extends Observable {
                 contact.setName(name);
                 if (contact.getState() == ContactState.UNNAMED) {
                     contact.setState(ContactState.CONNECTED);
+                } else {
+                    this.updateObservers();
                 }
                 changed = true;
             }
@@ -81,16 +83,20 @@ public class ContactManager extends Observable {
         if (!changed) {
             this.addContact(new Contact(name, ip));
         }
-        this.updateObservers();
+
     }
 
     public synchronized void changeState(ContactState state, String ip) {
+        boolean changed = false;
         for (Contact contact : contacts) {
             if (contact.sameIP(ip)) {
                 contact.setState(state);
+                changed = true;
             }
         }
-        this.updateObservers();
+        if (changed){
+            this.updateObservers();
+        }
     }
 
     public synchronized void setAllToDisconnected() {

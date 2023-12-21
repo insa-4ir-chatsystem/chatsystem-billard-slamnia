@@ -30,6 +30,7 @@ public class TCPServer {
                     connections.add(con);
                     con.start();
                 } catch (NoContactFoundException e) {
+                    sender.close();
                     System.out.println("Suspicious connection from " + ip);
                 }
             }

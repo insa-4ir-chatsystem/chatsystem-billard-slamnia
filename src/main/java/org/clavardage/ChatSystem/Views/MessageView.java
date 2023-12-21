@@ -37,7 +37,7 @@ public class MessageView extends JPanel implements Observer {
 
         this.messageField = new JTextField(50);
 
-        this.sendButton = new JButton("->");
+        this.sendButton = new JButton("⊳");
         this.sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
