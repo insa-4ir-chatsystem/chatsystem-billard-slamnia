@@ -11,12 +11,13 @@ public class MessagesHistory extends Observable {
 
     public MessagesHistory(Contact contact) {
         this.contact = contact;
+        this.messages = new ArrayList<>();
     }
 
     public void addMessage(Message msg) {
         this.messages.add(msg);
         this.setChanged();
-        this.notifyObservers();
+        this.notifyObservers(this.messages);
     }
 
     public Contact getContact() {
@@ -26,4 +27,5 @@ public class MessagesHistory extends Observable {
     public ArrayList<Message> getMessages() {
         return this.messages;
     }
+
 }

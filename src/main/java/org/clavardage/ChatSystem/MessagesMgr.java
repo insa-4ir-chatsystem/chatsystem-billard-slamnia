@@ -1,7 +1,9 @@
 package org.clavardage.ChatSystem;
 
+import com.sun.marlin.stats.Histogram;
 import org.clavardage.DiscoverySystem.Contact;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MessagesMgr {
@@ -31,6 +33,16 @@ public class MessagesMgr {
         this.histories.add(history);
         this.msgBdd.fillHistory(history);
         return history;
+    }
+
+    public void addMessage(Message msg) {
+        MessagesHistory hist = this.getHistory(msg.getContact());
+        hist.addMessage(msg);
+        try {
+            this.msgBdd.addMessage(msg);
+        } catch (SQLException | UserUnobtainableException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

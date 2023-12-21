@@ -7,14 +7,13 @@ import org.clavardage.DiscoverySystem.NoContactFoundException;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Observable;
 
 public class TCPServer {
 
     static private TCPServer instance = null;
     static private final int SERVERPORT = 8789;
 
-    private ArrayList<Connection> connections;
+    private ArrayList<ConnectionListener> connectionListeners;
 
     private TCPServer() {
         ContactManager contactMgr = ContactManager.getInstance();
@@ -26,8 +25,8 @@ public class TCPServer {
                 String ip = sender.getInetAddress().toString();
                 try {
                     Contact contact = contactMgr.getContact(ip);
-                    Connection con = new Connection(sender, msgMgr.getHistory(contact));
-                    connections.add(con);
+                    ConnectionListener con = new ConnectionListener(sender, contact);
+                    connectionListeners.add(con);
                     con.start();
                 } catch (NoContactFoundException e) {
                     sender.close();
@@ -47,16 +46,20 @@ public class TCPServer {
     }
 
     public void halt() {
-        for (Connection con: this.connections) {
+        for (ConnectionListener con: this.connectionListeners) {
             con.halt();
         }
-        for (Connection con: this.connections) {
+        for (ConnectionListener con: this.connectionListeners) {
             try {
                 con.join();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public static int getPort() {
+        return TCPServer.SERVERPORT;
     }
 
 }

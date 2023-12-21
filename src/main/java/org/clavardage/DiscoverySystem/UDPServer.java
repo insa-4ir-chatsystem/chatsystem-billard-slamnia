@@ -53,7 +53,7 @@ public class UDPServer extends Thread {
                 case 'e' -> {
                     contactMgr.changeState(ContactState.DISCONNECTED, ip);
                 }
-                /** Connection of an Agent **/
+                /** ConnectionListener of an Agent **/
                 case 'c' -> {
                     contactMgr.addContact(new Contact(ip));
                     networkMgr.send(ip, "p" + contactMgr.getPseudo());

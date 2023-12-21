@@ -11,13 +11,19 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+
 public class MessagesBDDTests {
 
     private static MessagesBDD bdd;
+    private static MessagesMgr msgmgr;
 
     @BeforeAll
     public static void setUp() {
         MessagesBDDTests.bdd = MessagesBDD.getInstance();
+        MessagesBDDTests.msgmgr = MessagesMgr.getInstance();
     }
 
     @BeforeEach
@@ -38,8 +44,50 @@ public class MessagesBDDTests {
     public void createMessages() {
         Contact tom = new Contact("Tom", "3.4.5.2");
         assertDoesNotThrow(() -> {
-            MessagesBDDTests.bdd.addContact(new Contact("Tom", "3.4.5.6"));
+            MessagesBDDTests.bdd.addContact(tom);
+        });
+        assertDoesNotThrow(() -> {
             MessagesBDDTests.bdd.addMessage(new Message("Coucou", tom, Origin.LOCAL));
         });
+    }
+
+    @DisplayName("Observer Test")
+    @Test
+    public void observerTest() {
+
+        Contact tom = new Contact("Tom", "3.4.5.2");
+        Message msg = new Message("Coucou", tom, Origin.LOCAL);
+        class MsgObserver implements Observer {
+            private int length;
+            private Message msg;
+            @Override
+            public void update(Observable observable, Object o) {
+                ArrayList<Message> messages = (ArrayList<Message>) o;
+                System.out.println("Observer notified");
+                this.length = messages.size();
+                if (this.length == 1) {
+                    this.msg = messages.get(0);
+                }
+            }
+
+            public int getLength() {
+                return this.length;
+            }
+
+            public Message getMsg() {
+                return this.msg;
+            }
+        }
+        MsgObserver msgObs = new MsgObserver();
+        assertDoesNotThrow(() -> {
+            MessagesBDDTests.bdd.addContact(tom);
+        });
+        MessagesHistory hist = MessagesBDDTests.msgmgr.getHistory(tom);
+        hist.addObserver(msgObs);
+        assertDoesNotThrow(() -> {
+            MessagesBDDTests.msgmgr.addMessage(msg);
+        });
+        assertEquals(1,msgObs.getLength());
+        assertEquals(msg, msgObs.getMsg());
     }
 }
