@@ -26,7 +26,7 @@ public class TCPServer extends Thread {
                 Socket sender = srvSock.accept();
                 String ip = sender.getInetAddress().toString();
                 try {
-                    Contact contact = contactMgr.getContact(ip);
+                    Contact contact = contactMgr.getContactByIp(ip);
                     ConnectionListener con = new ConnectionListener(sender, contact);
                     connectionListeners.add(con);
                     con.start();

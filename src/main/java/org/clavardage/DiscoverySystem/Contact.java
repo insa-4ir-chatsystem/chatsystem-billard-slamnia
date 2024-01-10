@@ -41,6 +41,9 @@ public class Contact {
     public boolean sameIP(String ip) {
         return ip.equals(this.ip);
     }
+    public boolean sameName(String name) {
+        return name.equals(this.name);
+    }
 
     public boolean equals(Contact o) {
         if (this == o) return true;

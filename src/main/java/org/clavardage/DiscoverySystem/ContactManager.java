@@ -58,9 +58,18 @@ public class ContactManager extends Observable {
         this.updateObservers();
     }
 
-    public synchronized Contact getContact(String ip) throws NoContactFoundException{
+    public synchronized Contact getContactByIp(String ip) throws NoContactFoundException{
         for (Contact contact: this.contacts) {
             if (contact.sameIP(ip)) {
+                return contact;
+            }
+        }
+        throw new NoContactFoundException();
+    }
+
+    public synchronized Contact getContactByName(String name) throws NoContactFoundException{
+        for (Contact contact: this.contacts) {
+            if (contact.sameName(name)) {
                 return contact;
             }
         }

@@ -5,9 +5,11 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.clavardage.ChatSystem.messageManagement.Message;
 import org.clavardage.ChatSystem.messageManagement.MessagesHistory;
 import com.intellij.uiDesigner.core.Spacer;
+import org.clavardage.ChatSystem.messageManagement.MessagesMgr;
 import org.clavardage.DiscoverySystem.Contact;
 import org.clavardage.DiscoverySystem.ContactManager;
 import org.clavardage.DiscoverySystem.DiscoverySystem;
+import org.clavardage.DiscoverySystem.NoContactFoundException;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -28,7 +30,9 @@ public class ConnectedView implements Observer {
     private JList contactsListDisplay;
     private DefaultListModel contactList;
     private DefaultListModel messageList;
-    private DiscoverySystem ds;
+    private MessagesMgr msgManager = MessagesMgr.getInstance();
+    private MessagesHistory msgHistory;
+    private DiscoverySystem ds = DiscoverySystem.getInstance();
 
     public ConnectedView(ActionListener listener) {
         this.logOutButton.addActionListener(new ActionListener() {
@@ -41,23 +45,29 @@ public class ConnectedView implements Observer {
 
         // Contact list part
         this.contactList = new DefaultListModel<String>();
-        this.ds = DiscoverySystem.getInstance();
         this.ds.attachObserverToContactList(this);
         this.ds.updateObservers();
 
         this.contactsListDisplay.setModel(this.contactList);
 
+        // Messages display part
+        ConnectedView self = this;
         this.contactsListDisplay.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
-
+                try {
+                    msgHistory = msgManager.getHistory(ContactManager.getInstance().getContactByName((String) contactsListDisplay.getSelectedValue()));
+                    msgHistory.addObserver(self);
+                } catch (NoContactFoundException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
-        // Messages display part
         this.messageList = new DefaultListModel<String>();
 
         ContactManager.getInstance().addContact(new Contact("AAA", "IP"));
+
 
         this.sendButton.addActionListener(new ActionListener() {
             @Override
