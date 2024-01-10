@@ -43,7 +43,7 @@ public class Contact {
         this.name = name;
     }
     public boolean sameIP(String ip) {
-        return ip.equals(this.ip);
+        return cleanIp(ip).equals(this.ip);
     }
 
     public boolean equals(Contact o) {

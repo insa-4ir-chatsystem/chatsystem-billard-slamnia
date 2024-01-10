@@ -30,6 +30,7 @@ public class TCPTests {
     @BeforeAll
     static public void setup() {
         TCPTests.svr = TCPServer.getInstance();
+        TCPTests.svr.start();
         TCPTests.sender = TCPSender.getInstance();
         TCPTests.ds = DiscoverySystem.getInstance();
         TCPTests.msgMgr = MessagesMgr.getInstance();
@@ -84,7 +85,13 @@ public class TCPTests {
         hist.addObserver(msgObs);
         Message msg = new Message("Coucou", peter, Origin.LOCAL);
         TCPTests.sender.sendMessage(msg);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         Message lastMessage = msgObs.getLastMessage();
+        assertNotNull(lastMessage);
         Message recievedMessage = new Message("Coucou", peter, Origin.REMOTE);
         assertEquals(recievedMessage, lastMessage);
     }

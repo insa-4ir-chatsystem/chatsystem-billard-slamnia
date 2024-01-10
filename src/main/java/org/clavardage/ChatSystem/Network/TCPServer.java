@@ -21,16 +21,16 @@ public class TCPServer extends Thread {
     public void run() {
         ContactManager contactMgr = ContactManager.getInstance();
 //        MessagesMgr msgMgr = MessagesMgr.getInstance();
+        this.connectionListeners = new ArrayList<>();
         try {
             ServerSocket srvSock = new ServerSocket(TCPServer.SERVERPORT);
             while (running) {
-                System.out.println("TCPServer is running");
                 Socket sender = srvSock.accept();
                 String ip = sender.getInetAddress().toString();
                 try {
                     Contact contact = contactMgr.getContact(ip);
                     ConnectionListener con = new ConnectionListener(sender, contact);
-                    connectionListeners.add(con);
+                    this.connectionListeners.add(con);
                     con.start();
                 } catch (NoContactFoundException e) {
                     sender.close();
