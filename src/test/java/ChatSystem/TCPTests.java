@@ -30,7 +30,6 @@ public class TCPTests {
     @BeforeAll
     static public void setup() {
         TCPTests.svr = TCPServer.getInstance();
-        System.out.println("Reached here");
         TCPTests.sender = TCPSender.getInstance();
         TCPTests.ds = DiscoverySystem.getInstance();
         TCPTests.msgMgr = MessagesMgr.getInstance();
@@ -80,6 +79,7 @@ public class TCPTests {
             TCPTests.ds.connect("Peter");
         });
         Contact peter = contactObserver.getAContact();
+        assertNotNull(peter);
         MessagesHistory hist = TCPTests.msgMgr.getHistory(peter);
         hist.addObserver(msgObs);
         Message msg = new Message("Coucou", peter, Origin.LOCAL);
