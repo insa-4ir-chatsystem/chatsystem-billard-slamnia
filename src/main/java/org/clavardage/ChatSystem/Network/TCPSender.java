@@ -3,15 +3,14 @@ package org.clavardage.ChatSystem;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TCPSender {
     private static TCPSender instance = null;
-    private final HashMap<String, PrintWriter> writers;
+    private final HashMap<String, Socket> sockets;
 
     private TCPSender() {
-        this.writers = new HashMap<>();
+        this.sockets = new HashMap<>();
     }
 
     public static TCPSender getInstance() {
@@ -23,24 +22,34 @@ public class TCPSender {
 
     public void sendMessage(Message msg) {
         String ip = msg.getContact().getIp();
-        PrintWriter out = this.writers.get(ip);
-        if (out == null) {
-            Socket sock = null;
+        Socket sock = this.sockets.get(ip);
+        PrintWriter out;
+        if (sock == null) {
             try {
                 sock = new Socket(ip, TCPServer.getPort());
+                this.sockets.put(ip, sock);
                 out = new PrintWriter(sock.getOutputStream(), true);
-                this.writers.put(ip, out);
+                if (msg.getOrigin() == Origin.LOCAL) {
+                    switch (msg.getType()) {
+                        case FILE -> {}
+                        case TEXT -> {
+                            out.println(msg.getMessage());
+                        }
+                        case TEXT_AND_FILE -> {}
+                    }
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        if (msg.getOrigin() == Origin.LOCAL) {
-            switch (msg.getType()) {
-                case FILE -> {}
-                case TEXT -> {
-                    this.writers.get(ip).println(msg.getMessage());
-                }
-                case TEXT_AND_FILE -> {}
+    }
+
+    public void halt() {
+        for (Socket sock: this.sockets.values()) {
+            try {
+                sock.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
