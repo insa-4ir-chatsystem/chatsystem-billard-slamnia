@@ -39,6 +39,8 @@ public class TCPTests {
     @AfterAll
     static public void cleanUp() {
         TCPTests.svr.halt();
+        TCPTests.ds = null;
+        DiscoverySystem.release();
     }
 
     @DisplayName("sending a message test")

@@ -5,11 +5,15 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.clavardage.ChatSystem.messageManagement.Message;
 import org.clavardage.ChatSystem.messageManagement.MessagesHistory;
 import com.intellij.uiDesigner.core.Spacer;
+import org.clavardage.ChatSystem.messageManagement.MessagesMgr;
 import org.clavardage.DiscoverySystem.Contact;
 import org.clavardage.DiscoverySystem.ContactManager;
 import org.clavardage.DiscoverySystem.DiscoverySystem;
+import org.clavardage.DiscoverySystem.NoContactFoundException;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,13 +24,15 @@ import java.util.Observer;
 public class ConnectedView implements Observer {
     private JPanel panel1;
     private JButton logOutButton;
-    private JTextField messageField;
+    private JTextArea messageField;
     private JButton sendButton;
     private JList messagesListDisplay;
     private JList contactsListDisplay;
     private DefaultListModel contactList;
     private DefaultListModel messageList;
-    private DiscoverySystem ds;
+    private MessagesMgr msgManager = MessagesMgr.getInstance();
+    private MessagesHistory msgHistory;
+    private DiscoverySystem ds = DiscoverySystem.getInstance();
 
     public ConnectedView(ActionListener listener) {
         this.logOutButton.addActionListener(new ActionListener() {
@@ -39,15 +45,29 @@ public class ConnectedView implements Observer {
 
         // Contact list part
         this.contactList = new DefaultListModel<String>();
-        this.ds = DiscoverySystem.getInstance();
         this.ds.attachObserverToContactList(this);
         this.ds.updateObservers();
 
         this.contactsListDisplay.setModel(this.contactList);
 
-        // Messages Display part
+        // Messages display part
+        ConnectedView self = this;
+        this.contactsListDisplay.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                try {
+                    msgHistory = msgManager.getHistory(ContactManager.getInstance().getContactByName((String) contactsListDisplay.getSelectedValue()));
+                    msgHistory.addObserver(self);
+                } catch (NoContactFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
         this.messageList = new DefaultListModel<String>();
+
         ContactManager.getInstance().addContact(new Contact("AAA", "IP"));
+
 
         this.sendButton.addActionListener(new ActionListener() {
             @Override
@@ -97,8 +117,8 @@ public class ConnectedView implements Observer {
         panel1.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
-        panel1.add(panel2, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        messageField = new JTextField();
+        panel1.add(panel2, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        messageField = new JTextArea();
         panel2.add(messageField, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         sendButton = new JButton();
         sendButton.setText("Send");
@@ -116,13 +136,11 @@ public class ConnectedView implements Observer {
         logOutButton.setText("Log Out");
         panel3.add(logOutButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JScrollPane scrollPane2 = new JScrollPane();
-        panel1.add(scrollPane2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel1.add(scrollPane2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         contactsListDisplay = new JList();
         contactsListDisplay.setLayoutOrientation(2);
         contactsListDisplay.setVisibleRowCount(10);
         scrollPane2.setViewportView(contactsListDisplay);
-        final Spacer spacer1 = new Spacer();
-        panel1.add(spacer1, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
     }
 
     /**

@@ -39,6 +39,15 @@ public class MessagesBDDTests {
         });
     }
 
+    @DisplayName("Add Contact Test")
+    @Test
+    public void changePseudo() {
+        assertDoesNotThrow(() -> {
+            MessagesBDDTests.bdd.addContact(new Contact("Tom", "3.4.5.6"));
+            MessagesBDDTests.bdd.changePseudo(new Contact("Alain", "3.4.5.6"));
+        });
+    }
+
     @DisplayName("Create Messages Test")
     @Test
     public void createMessages() {

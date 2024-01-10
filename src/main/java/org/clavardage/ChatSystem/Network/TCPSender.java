@@ -3,6 +3,7 @@ package org.clavardage.ChatSystem.Network;
 import org.clavardage.ChatSystem.messageManagement.Message;
 import org.clavardage.ChatSystem.messageManagement.Origin;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -20,11 +21,6 @@ public class TCPSender {
         if (TCPSender.instance == null) {
             TCPSender.instance = new TCPSender();
         }
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         return TCPSender.instance;
     }
 
@@ -33,28 +29,28 @@ public class TCPSender {
         Socket sock = this.sockets.get(ip);
         PrintWriter out;
         if (sock == null) {
+            System.out.println("IP = " + ip);
+            System.out.println("Port = " + TCPServer.getPort());
             try {
-                System.out.println("IP = " + ip);
-                System.out.println("Port = " + TCPServer.getPort());
                 sock = new Socket(ip, TCPServer.getPort());
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                JOptionPane.showMessageDialog(null, "Could not open socket to this contact");
             }
             this.sockets.put(ip, sock);
         }
         try {
             out = new PrintWriter(sock.getOutputStream(), true);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        if (msg.getOrigin() == Origin.LOCAL) {
-            switch (msg.getType()) {
-                case FILE -> {}
-                case TEXT -> {
-                    out.println(msg.getMessage());
+            if (msg.getOrigin() == Origin.LOCAL) {
+                switch (msg.getType()) {
+                    case FILE -> {}
+                    case TEXT -> {
+                        out.println(msg.getMessage());
+                    }
+                    case TEXT_AND_FILE -> {}
                 }
-                case TEXT_AND_FILE -> {}
             }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Issue with database when adding contact");
         }
     }
 
@@ -63,7 +59,7 @@ public class TCPSender {
             try {
                 sock.close();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                JOptionPane.showMessageDialog(null, "Could not close socket when halting TCPSender");
             }
         }
     }

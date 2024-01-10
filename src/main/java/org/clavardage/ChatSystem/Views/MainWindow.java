@@ -47,8 +47,6 @@ public class MainWindow extends JFrame implements ActionListener {
         try {
             MainWindow form = new MainWindow();
             form.setVisible(true);
-
-
         }catch(Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
