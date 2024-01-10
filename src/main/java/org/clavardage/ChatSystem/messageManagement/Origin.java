@@ -1,4 +1,6 @@
-package org.clavardage.ChatSystem;
+package org.clavardage.ChatSystem.messageManagement;
+
+import org.clavardage.ChatSystem.exceptions.InvalidOriginException;
 
 public enum Origin {
     LOCAL(1),

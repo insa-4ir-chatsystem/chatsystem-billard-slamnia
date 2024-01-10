@@ -1,5 +1,6 @@
-package org.clavardage.ChatSystem;
+package org.clavardage.ChatSystem.Network;
 
+import org.clavardage.ChatSystem.messageManagement.MessagesMgr;
 import org.clavardage.DiscoverySystem.Contact;
 import org.clavardage.DiscoverySystem.ContactManager;
 import org.clavardage.DiscoverySystem.NoContactFoundException;
@@ -8,14 +9,15 @@ import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
 
-public class TCPServer {
+public class TCPServer extends Thread {
 
     static private TCPServer instance = null;
     static private final int SERVERPORT = 8789;
 
     private ArrayList<ConnectionListener> connectionListeners;
 
-    private TCPServer() {
+    @Override
+    public void run() {
         ContactManager contactMgr = ContactManager.getInstance();
         MessagesMgr msgMgr = MessagesMgr.getInstance();
         try {
@@ -45,7 +47,7 @@ public class TCPServer {
         return TCPServer.instance;
     }
 
-    public void halt() {
+    synchronized public void halt() {
         for (ConnectionListener con: this.connectionListeners) {
             con.halt();
         }

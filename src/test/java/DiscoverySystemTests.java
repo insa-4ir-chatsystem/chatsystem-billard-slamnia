@@ -23,11 +23,11 @@ public class DiscoverySystemTests {
     @BeforeAll
     public static void setUp() {
 
-        try {
-            socket = new DatagramSocket(NetworkManager.getPort());
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            socket = new DatagramSocket(NetworkManager.getPort());
+//        } catch (SocketException e) {
+//            throw new RuntimeException(e);
+//        }
         DiscoverySystemTests.ds = DiscoverySystem.getInstance(DiscoverySystemTests.testPort);
         DiscoverySystemTests.contactManager = ContactManager.getInstance();
     }

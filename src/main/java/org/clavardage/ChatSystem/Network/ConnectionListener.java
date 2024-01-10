@@ -1,5 +1,8 @@
-package org.clavardage.ChatSystem;
+package org.clavardage.ChatSystem.Network;
 
+import org.clavardage.ChatSystem.messageManagement.Message;
+import org.clavardage.ChatSystem.messageManagement.MessagesMgr;
+import org.clavardage.ChatSystem.messageManagement.Origin;
 import org.clavardage.DiscoverySystem.Contact;
 
 import java.io.BufferedReader;
@@ -11,7 +14,7 @@ public class ConnectionListener extends Thread {
 
 
     private Socket sock;
-    private MessagesMgr  msgMgr;
+    private MessagesMgr msgMgr;
     private Contact contact;
     private boolean running = true;
     public ConnectionListener(Socket sock, Contact contact) {
