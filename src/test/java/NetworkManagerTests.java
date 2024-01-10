@@ -26,6 +26,7 @@ public class NetworkManagerTests
 
     @BeforeEach
     public void setUpEach() {
+        contManager.resetList();
         try {
             NetworkManagerTests.socket = new DatagramSocket(NetworkManagerTests.port);
         } catch (SocketException e) {
@@ -104,6 +105,7 @@ public class NetworkManagerTests
     @DisplayName("Test pour la réception d'une déconnexion")
     @Test
     public void disconnectionTest() {
+        assertEquals(0,contManager.getConnectedContacts().size());
         byte[] bufConnection = "c".getBytes();
         byte[] bufChangePseudo = "pPaul".getBytes();
         byte[] bufDisconnection = "e".getBytes();

@@ -2,8 +2,8 @@ package ChatSystem;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.clavardage.ChatSystem.messageManagement.*;
 import org.junit.jupiter.api.*;
-import org.clavardage.ChatSystem.*;
 import org.clavardage.DiscoverySystem.Contact;
 
 import org.junit.jupiter.api.BeforeAll;

@@ -1,4 +1,4 @@
-package org.clavardage.ChatSystem;
+package org.clavardage.ChatSystem.exceptions;
 
 public class UserUnobtainableException extends Exception{
 }

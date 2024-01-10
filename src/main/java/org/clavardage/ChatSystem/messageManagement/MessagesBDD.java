@@ -1,8 +1,11 @@
-package org.clavardage.ChatSystem;
+package org.clavardage.ChatSystem.messageManagement;
 
 import java.sql.*;
 import java.sql.Connection;
 
+import org.clavardage.ChatSystem.exceptions.InvalidMessageTypeException;
+import org.clavardage.ChatSystem.exceptions.InvalidOriginException;
+import org.clavardage.ChatSystem.exceptions.UserUnobtainableException;
 import org.clavardage.DiscoverySystem.Contact;
 
 public class MessagesBDD {
@@ -159,8 +162,14 @@ public class MessagesBDD {
                  }
              }
              statement.close();
-         } catch (SQLException | UserUnobtainableException | InvalidMessageTypeException | InvalidOriginException e) {
+         } catch (SQLException e) {
              throw new RuntimeException(e);
+         } catch (InvalidMessageTypeException e) {
+             System.out.println("Message has invalid type");
+         } catch (UserUnobtainableException e) {
+             System.out.println("User unknown");
+         } catch (InvalidOriginException e) {
+             System.out.println("Message with strange origin in database");
          }
      }
 

@@ -1,4 +1,4 @@
-package org.clavardage.ChatSystem;
+package org.clavardage.ChatSystem.messageManagement;
 
 import org.clavardage.DiscoverySystem.Contact;
 

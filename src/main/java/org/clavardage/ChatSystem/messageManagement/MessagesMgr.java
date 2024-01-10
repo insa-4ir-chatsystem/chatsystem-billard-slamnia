@@ -1,6 +1,6 @@
-package org.clavardage.ChatSystem;
+package org.clavardage.ChatSystem.messageManagement;
 
-import com.sun.marlin.stats.Histogram;
+import org.clavardage.ChatSystem.exceptions.UserUnobtainableException;
 import org.clavardage.DiscoverySystem.Contact;
 
 import java.sql.SQLException;

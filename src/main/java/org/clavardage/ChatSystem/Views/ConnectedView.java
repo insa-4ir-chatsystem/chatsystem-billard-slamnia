@@ -2,8 +2,8 @@ package org.clavardage.ChatSystem.Views;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import org.clavardage.ChatSystem.Message;
-import org.clavardage.ChatSystem.MessagesHistory;
+import org.clavardage.ChatSystem.messageManagement.Message;
+import org.clavardage.ChatSystem.messageManagement.MessagesHistory;
 import org.clavardage.DiscoverySystem.Contact;
 import org.clavardage.DiscoverySystem.ContactManager;
 import org.clavardage.DiscoverySystem.DiscoverySystem;

@@ -1,8 +1,6 @@
-package org.clavardage.ChatSystem;
+package org.clavardage.ChatSystem.messageManagement;
 
-import org.clavardage.ChatSystem.InvalidMessageTypeException;
-
-import org.clavardage.ChatSystem.MessageType;
+import org.clavardage.ChatSystem.exceptions.InvalidMessageTypeException;
 
 public enum MessageType {
     TEXT(1),

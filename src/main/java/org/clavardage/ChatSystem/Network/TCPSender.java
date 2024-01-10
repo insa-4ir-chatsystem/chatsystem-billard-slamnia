@@ -1,4 +1,7 @@
-package org.clavardage.ChatSystem;
+package org.clavardage.ChatSystem.Network;
+
+import org.clavardage.ChatSystem.messageManagement.Message;
+import org.clavardage.ChatSystem.messageManagement.Origin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,9 +30,16 @@ public class TCPSender {
         if (sock == null) {
             try {
                 sock = new Socket(ip, TCPServer.getPort());
-                this.sockets.put(ip, sock);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            this.sockets.put(ip, sock);
+            try {
                 out = new PrintWriter(sock.getOutputStream(), true);
-                if (msg.getOrigin() == Origin.LOCAL) {
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            if (msg.getOrigin() == Origin.LOCAL) {
                     switch (msg.getType()) {
                         case FILE -> {}
                         case TEXT -> {
@@ -38,9 +48,6 @@ public class TCPSender {
                         case TEXT_AND_FILE -> {}
                     }
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 
