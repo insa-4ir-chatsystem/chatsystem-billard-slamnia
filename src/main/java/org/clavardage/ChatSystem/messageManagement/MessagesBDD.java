@@ -3,6 +3,7 @@ package org.clavardage.ChatSystem.messageManagement;
 import java.sql.*;
 import java.sql.Connection;
 
+import org.clavardage.ChatSystem.Views.ConnectedView;
 import org.clavardage.ChatSystem.exceptions.InvalidMessageTypeException;
 import org.clavardage.ChatSystem.exceptions.InvalidOriginException;
 import org.clavardage.ChatSystem.exceptions.UserUnobtainableException;
@@ -96,6 +97,14 @@ public class MessagesBDD {
         Statement statement = this.connection.createStatement();
         statement.addBatch("INSERT INTO contacts (name, ip) VALUES (\"" +
                            contact.getName() + "\", \"" + contact.getIp() + "\");");
+        statement.executeBatch();
+        statement.close();
+    }
+
+    public void changePseudo(Contact contact) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        statement.addBatch("UPDATE contacts SET name=\"" + contact.getName() + "\"" +
+                "WHERE ip= \"" + contact.getIp() + "\";");
         statement.executeBatch();
         statement.close();
     }

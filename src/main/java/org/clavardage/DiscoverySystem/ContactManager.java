@@ -1,5 +1,8 @@
 package org.clavardage.DiscoverySystem;
 
+import org.clavardage.ChatSystem.messageManagement.MessagesBDD;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -54,6 +57,11 @@ public class ContactManager extends Observable {
         }
         if (!contactPresent) {
             contacts.add(newContact);
+            try {
+                MessagesBDD.getInstance().addContact(newContact);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         this.updateObservers();
     }
@@ -81,6 +89,11 @@ public class ContactManager extends Observable {
         for (Contact contact : contacts) {
             if (contact.sameIP(ip)) {
                 contact.setName(name);
+                try {
+                    MessagesBDD.getInstance().changePseudo(contact);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 if (contact.getState() == ContactState.UNNAMED) {
                     contact.setState(ContactState.CONNECTED);
                 } else {
@@ -91,6 +104,7 @@ public class ContactManager extends Observable {
         }
         if (!changed) {
             this.addContact(new Contact(name, ip));
+
         }
 
     }
