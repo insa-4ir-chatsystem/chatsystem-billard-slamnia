@@ -41,8 +41,10 @@ public class MessagesMgr {
         hist.addMessage(msg);
         try {
             this.msgBdd.addMessage(msg);
-        } catch (SQLException | UserUnobtainableException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
+        } catch (UserUnobtainableException e) {
+            System.out.println("User not found");
         }
     }
 

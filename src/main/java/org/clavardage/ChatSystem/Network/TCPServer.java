@@ -5,6 +5,7 @@ import org.clavardage.DiscoverySystem.Contact;
 import org.clavardage.DiscoverySystem.ContactManager;
 import org.clavardage.DiscoverySystem.NoContactFoundException;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
@@ -21,23 +22,24 @@ public class TCPServer extends Thread {
     public void run() {
         ContactManager contactMgr = ContactManager.getInstance();
 //        MessagesMgr msgMgr = MessagesMgr.getInstance();
+        this.connectionListeners = new ArrayList<>();
         try {
             ServerSocket srvSock = new ServerSocket(TCPServer.SERVERPORT);
             while (running) {
-                System.out.println("TCPServer is running");
                 Socket sender = srvSock.accept();
                 String ip = sender.getInetAddress().toString();
                 try {
                     Contact contact = contactMgr.getContactByIp(ip);
                     ConnectionListener con = new ConnectionListener(sender, contact);
-                    connectionListeners.add(con);
+                    this.connectionListeners.add(con);
                     con.start();
                 } catch (NoContactFoundException e) {
                     sender.close();
-                    System.out.println("Suspicious connection from " + ip);
+                    JOptionPane.showMessageDialog(null, "Suspicious connection from " + ip);
                 }
             }
         } catch (IOException e) {
+            System.out.println("Could not create Server Socket. Shutting down");
             throw new RuntimeException(e);
         }
     }

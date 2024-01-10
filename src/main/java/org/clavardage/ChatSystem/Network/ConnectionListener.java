@@ -5,6 +5,7 @@ import org.clavardage.ChatSystem.messageManagement.MessagesMgr;
 import org.clavardage.ChatSystem.messageManagement.Origin;
 import org.clavardage.DiscoverySystem.Contact;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,28 +27,27 @@ public class ConnectionListener extends Thread {
     @Override
     public void run() {
         BufferedReader in;
+        System.out.println("ConnectionListener is running");
 //        TCPServer tcpServer = TCPServer.getInstance();
         try {
             in = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        String inputline;
-        while (running) {
-            try {
-                inputline = in.readLine();
-                synchronized (this) {
-                    // TODO: make this more efficient, because this has to find the right history
-                    this.msgMgr.addMessage(new Message(inputline, this.contact, Origin.REMOTE));
+            String inputline;
+            while (this.running) {
+                try {
+                    inputline = in.readLine();
+                    synchronized (this) {
+                        // TODO: make this more efficient, because this has to find the right history
+                        this.msgMgr.addMessage(new Message(inputline, this.contact, Origin.REMOTE));
+                    }
+                } catch (IOException e) {
+                    if (this.running) {
+                        JOptionPane.showMessageDialog(null, "Could not read incoming message");
+                        throw new RuntimeException(e);
+                    }
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
-        }
-        try {
-            this.sock.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "Cannot receive messages from contact");
         }
     }
 
@@ -56,7 +56,6 @@ public class ConnectionListener extends Thread {
         try {
             this.sock.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }

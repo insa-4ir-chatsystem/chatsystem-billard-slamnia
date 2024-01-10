@@ -2,6 +2,7 @@ package org.clavardage.DiscoverySystem;
 
 import org.clavardage.ChatSystem.messageManagement.MessagesBDD;
 
+import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -60,6 +61,7 @@ public class ContactManager extends Observable {
             try {
                 MessagesBDD.getInstance().addContact(newContact);
             } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Issue with database when adding contact");
                 throw new RuntimeException(e);
             }
         }
