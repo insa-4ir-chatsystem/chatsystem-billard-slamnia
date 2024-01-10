@@ -13,16 +13,18 @@ public class TCPServer extends Thread {
 
     static private TCPServer instance = null;
     static private final int SERVERPORT = 8789;
+    private boolean running = true;
 
     private ArrayList<ConnectionListener> connectionListeners;
 
     @Override
     public void run() {
         ContactManager contactMgr = ContactManager.getInstance();
-        MessagesMgr msgMgr = MessagesMgr.getInstance();
+//        MessagesMgr msgMgr = MessagesMgr.getInstance();
         try {
             ServerSocket srvSock = new ServerSocket(TCPServer.SERVERPORT);
-            while (true) {
+            while (running) {
+                System.out.println("TCPServer is running");
                 Socket sender = srvSock.accept();
                 String ip = sender.getInetAddress().toString();
                 try {
@@ -58,6 +60,7 @@ public class TCPServer extends Thread {
                 throw new RuntimeException(e);
             }
         }
+        this.running = false;
     }
 
     public static int getPort() {

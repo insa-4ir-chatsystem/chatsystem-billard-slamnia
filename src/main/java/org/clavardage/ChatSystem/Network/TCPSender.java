@@ -20,6 +20,11 @@ public class TCPSender {
         if (TCPSender.instance == null) {
             TCPSender.instance = new TCPSender();
         }
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return TCPSender.instance;
     }
 
@@ -29,25 +34,27 @@ public class TCPSender {
         PrintWriter out;
         if (sock == null) {
             try {
+                System.out.println("IP = " + ip);
+                System.out.println("Port = " + TCPServer.getPort());
                 sock = new Socket(ip, TCPServer.getPort());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             this.sockets.put(ip, sock);
-            try {
-                out = new PrintWriter(sock.getOutputStream(), true);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            if (msg.getOrigin() == Origin.LOCAL) {
-                    switch (msg.getType()) {
-                        case FILE -> {}
-                        case TEXT -> {
-                            out.println(msg.getMessage());
-                        }
-                        case TEXT_AND_FILE -> {}
-                    }
+        }
+        try {
+            out = new PrintWriter(sock.getOutputStream(), true);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if (msg.getOrigin() == Origin.LOCAL) {
+            switch (msg.getType()) {
+                case FILE -> {}
+                case TEXT -> {
+                    out.println(msg.getMessage());
                 }
+                case TEXT_AND_FILE -> {}
+            }
         }
     }
 

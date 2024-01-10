@@ -9,13 +9,13 @@ public class Contact {
 
     public Contact(String ip) {
         this.name = "";
-        this.ip = ip;
+        this.ip = cleanIp(ip);
         this.state = ContactState.UNNAMED;
     }
 
     public Contact(String name, String ip) {
         this.name = name;
-        this.ip = ip;
+        this.ip = cleanIp(ip);
         this.state = ContactState.CONNECTED;
     }
 
@@ -25,6 +25,10 @@ public class Contact {
 
     public ContactState getState() {
         return state;
+    }
+
+    private String cleanIp(String ip) {
+        return ip.replace("/", "");
     }
 
     public void setState(ContactState state) {
