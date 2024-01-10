@@ -10,3 +10,4 @@ CREATE TABLE messages(id INTEGER PRIMARY KEY AUTOINCREMENT, message TEXT ,
       origin INTEGER NOT NULL CHECK (type IN (1,2)), contactId INTEGER,
       FOREIGN KEY (contactId) REFERENCES contacts(id));
 EOF
+mvn package -f pom.xml

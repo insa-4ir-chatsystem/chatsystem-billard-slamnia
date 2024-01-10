@@ -1,5 +1,7 @@
 package org.clavardage.ChatSystem.Views;
 
+import org.clavardage.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -15,7 +17,9 @@ public class MainWindow extends JFrame implements ActionListener {
         setTitle("Chat System");
         setSize(1200,600);
         WindowListener l = new WindowAdapter() {
-            public void windowClosing(WindowEvent e){System.exit(0);}
+            public void windowClosing(WindowEvent e){
+                Main.halt();
+            }
         };
         addWindowListener(l);
 

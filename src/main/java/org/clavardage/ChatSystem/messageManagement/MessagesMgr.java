@@ -1,5 +1,6 @@
 package org.clavardage.ChatSystem.messageManagement;
 
+import org.clavardage.ChatSystem.Network.TCPSender;
 import org.clavardage.ChatSystem.exceptions.UserUnobtainableException;
 import org.clavardage.DiscoverySystem.Contact;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 
 public class MessagesMgr {
     static private MessagesMgr instance = null;
-    private MessagesBDD msgBdd = null;
+    private MessagesBDD msgBdd;
 
     private ArrayList<MessagesHistory> histories;
 
@@ -43,6 +44,11 @@ public class MessagesMgr {
         } catch (SQLException | UserUnobtainableException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void sendMessage(Message msg) {
+        this.addMessage(msg);
+        TCPSender.getInstance().sendMessage(msg);
     }
 
 }

@@ -4,8 +4,8 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.clavardage.ChatSystem.messageManagement.Message;
 import org.clavardage.ChatSystem.messageManagement.MessagesHistory;
-import com.intellij.uiDesigner.core.Spacer;
 import org.clavardage.ChatSystem.messageManagement.MessagesMgr;
+import org.clavardage.ChatSystem.messageManagement.Origin;
 import org.clavardage.DiscoverySystem.Contact;
 import org.clavardage.DiscoverySystem.ContactManager;
 import org.clavardage.DiscoverySystem.DiscoverySystem;
@@ -24,7 +24,7 @@ import java.util.Observer;
 public class ConnectedView implements Observer {
     private JPanel panel1;
     private JButton logOutButton;
-    private JTextArea messageField;
+    private JTextArea messageArea;
     private JButton sendButton;
     private JList messagesListDisplay;
     private JList contactsListDisplay;
@@ -55,26 +55,34 @@ public class ConnectedView implements Observer {
         this.contactsListDisplay.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                try {
-                    msgHistory = msgManager.getHistory(ContactManager.getInstance().getContactByName((String) contactsListDisplay.getSelectedValue()));
-                    msgHistory.addObserver(self);
-                } catch (NoContactFoundException e) {
-                    throw new RuntimeException(e);
-                }
+                msgHistory = msgManager.getHistory(getSelectedContact());
+                msgHistory.addObserver(self);
+                msgHistory.updateObservers();
             }
         });
 
         this.messageList = new DefaultListModel<String>();
 
-        ContactManager.getInstance().addContact(new Contact("AAA", "IP"));
-
-
         this.sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                if (!messageArea.getText().equals("")) {
+                    Message msg = new Message(messageArea.getText(), getSelectedContact(), Origin.LOCAL);
+                    msgManager.sendMessage(msg);
+                }
             }
         });
+    }
+
+    private Contact getSelectedContact() {
+        Contact res = null;
+        try {
+            res = ContactManager.getInstance().getContactByName((String) contactsListDisplay.getSelectedValue());
+        } catch (NoContactFoundException e) {
+            JOptionPane.showMessageDialog(null,
+                    "The selected contact is not found in the contact list");
+        }
+        return res;
     }
 
     @Override
@@ -118,8 +126,8 @@ public class ConnectedView implements Observer {
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         panel1.add(panel2, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        messageField = new JTextArea();
-        panel2.add(messageField, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        messageArea = new JTextArea();
+        panel2.add(messageArea, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         sendButton = new JButton();
         sendButton.setText("Send");
         panel2.add(sendButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

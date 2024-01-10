@@ -16,6 +16,10 @@ public class MessagesHistory extends Observable {
 
     public void addMessage(Message msg) {
         this.messages.add(msg);
+        this.updateObservers();
+    }
+
+    public void updateObservers() {
         this.setChanged();
         this.notifyObservers(this.messages);
     }
