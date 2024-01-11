@@ -34,9 +34,13 @@ public class ConnectionListener extends Thread {
             while (this.running) {
                 try {
                     inputline = in.readLine();
-                    synchronized (this) {
-                        // TODO: make this more efficient, because this has to find the right history
-                        this.msgMgr.addMessage(new Message(inputline, this.contact, Origin.REMOTE));
+                    if (inputline == null) {
+                        this.running = false;
+                    } else {
+                        synchronized (this) {
+                            // TODO: make this more efficient, because this has to find the right history
+                            this.msgMgr.addMessage(new Message(inputline, this.contact, Origin.REMOTE));
+                        }
                     }
                 } catch (IOException e) {
                     if (this.running) {

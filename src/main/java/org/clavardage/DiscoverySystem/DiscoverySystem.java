@@ -7,6 +7,8 @@ public class DiscoverySystem {
 
     private ContactManager contactManager;
 
+    private boolean connected = false;
+
     private static DiscoverySystem instance;
 
     public static DiscoverySystem getInstance(int port) {
@@ -44,11 +46,14 @@ public class DiscoverySystem {
 
         contactManager.setPseudo(pseudo);
         networkManager.sendAll("p"+pseudo);
+
+        this.connected = true;
     }
 
     public void disconnect() {
         networkManager.sendAll("e");
         contactManager.setAllToDisconnected();
+        this.connected = false;
     }
 
     public void changePseudo(String pseudo) throws ExistingPseudoException {
@@ -73,6 +78,9 @@ public class DiscoverySystem {
     }
 
     public static void release() {
+        if (DiscoverySystem.instance != null && DiscoverySystem.instance.connected) {
+            DiscoverySystem.instance.disconnect();
+        }
         DiscoverySystem.instance = null;
         ContactManager.release();
         NetworkManager.release();
