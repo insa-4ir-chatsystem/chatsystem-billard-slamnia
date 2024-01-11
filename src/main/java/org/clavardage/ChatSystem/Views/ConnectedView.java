@@ -28,6 +28,7 @@ public class ConnectedView implements Observer {
     private JButton sendButton;
     private JList messagesListDisplay;
     private JList contactsListDisplay;
+    private JScrollPane contactScrollPane;
     private DefaultListModel contactList;
     private DefaultListModel messageList;
     private MessagesMgr msgManager = MessagesMgr.getInstance();
@@ -93,6 +94,7 @@ public class ConnectedView implements Observer {
             this.contactList.removeAllElements();
             for (Contact contact : contacts) {
                 this.contactList.addElement(contact.getName());
+                System.out.println(contact.getName());
             }
         } else if (observable instanceof MessagesHistory) {
             ArrayList<Message> messages = (ArrayList<Message>) o;
@@ -140,7 +142,7 @@ public class ConnectedView implements Observer {
         panel2.add(scrollPane1, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         messagesListDisplay = new JList();
         messagesListDisplay.setLayoutOrientation(2);
-        messagesListDisplay.setVisibleRowCount(10);
+        messagesListDisplay.setVisibleRowCount(50);
         scrollPane1.setViewportView(messagesListDisplay);
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -163,4 +165,7 @@ public class ConnectedView implements Observer {
         return panel1;
     }
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }

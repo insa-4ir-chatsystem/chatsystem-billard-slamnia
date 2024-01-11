@@ -43,7 +43,7 @@
                 <constraints/>
                 <properties>
                   <layoutOrientation value="2"/>
-                  <visibleRowCount value="10"/>
+                  <visibleRowCount value="50"/>
                 </properties>
               </component>
             </children>
