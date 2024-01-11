@@ -95,7 +95,6 @@ public class ConnectedView implements Observer {
                 this.contactList.addElement(contact.getName());
             }
         } else if (observable instanceof MessagesHistory) {
-            System.out.println("update appele");
             ArrayList<Message> messages = (ArrayList<Message>) o;
             this.messageList.removeAllElements();
             for (Message message : messages) {
@@ -104,11 +103,8 @@ public class ConnectedView implements Observer {
                 } else if (message.getOrigin() == Origin.REMOTE) {
                     this.messageList.addElement(getSelectedContact().getName() + ": " + message.getMessage());
                 }
-
-                System.out.println(message.getMessage());
             }
         }
-
     }
 
     public void clearObserver() {
