@@ -41,13 +41,12 @@ public class UDPServer extends Thread {
 
             /** Extraction of the data from the incoming PDU **/
             String received = new String(inPacket.getData(), 0, inPacket.getLength());
-            String ip = inPacket.getAddress().toString();
+            String ip = inPacket.getAddress().toString().replace("/", "");
 
             if (received.isEmpty()) {
                 continue;
             }
 
-            System.out.println(received);
 
             /** Processing of the incoming data **/
             switch (received.charAt(0)) {
