@@ -1,5 +1,9 @@
 package org.clavardage.DiscoverySystem;
 
+import org.clavardage.ChatSystem.messageManagement.MessagesBDD;
+
+import javax.swing.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -14,7 +18,6 @@ public class ContactManager extends Observable {
         contacts = new ArrayList<>();
     }
 
-
     public synchronized static void release() {
         ContactManager.instance = null;
     }
@@ -28,7 +31,6 @@ public class ContactManager extends Observable {
 
     public void setPseudo(String pseudo) throws ExistingPseudoException {
         for (Contact contact : contacts) {
-//            System.out.println(contact.getName());
             if (contact.getState() == ContactState.CONNECTED && contact.getName().equals(pseudo)) {
                 throw new ExistingPseudoException("Pseudonym already existing");
             }
@@ -45,11 +47,7 @@ public class ContactManager extends Observable {
         for (Contact contact : contacts) {
             if (contact.sameIP(newContact.getIp())) {
                 if (newContact.getName().isEmpty()) {
-                    if (contact.getName().isEmpty()) {
-                        contact.setState(ContactState.UNNAMED);
-                    } else {
-                        contact.setState(ContactState.CONNECTED);
-                    }
+                    contact.setState(ContactState.UNNAMED);
                 } else {
                     contact.setState(ContactState.CONNECTED);
                     contact.setName(newContact.getName());
@@ -60,8 +58,32 @@ public class ContactManager extends Observable {
         }
         if (!contactPresent) {
             contacts.add(newContact);
+            try {
+                MessagesBDD.getInstance().addContact(newContact);
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Issue with database when adding contact");
+                throw new RuntimeException(e);
+            }
         }
         this.updateObservers();
+    }
+
+    public synchronized Contact getContactByIp(String ip) throws NoContactFoundException{
+        for (Contact contact: this.contacts) {
+            if (contact.sameIP(ip)) {
+                return contact;
+            }
+        }
+        throw new NoContactFoundException();
+    }
+
+    public synchronized Contact getContactByName(String name) throws NoContactFoundException{
+        for (Contact contact: this.contacts) {
+            if (contact.sameName(name)) {
+                return contact;
+            }
+        }
+        throw new NoContactFoundException();
     }
 
     public synchronized void changePseudo(String name, String ip) {
@@ -69,25 +91,36 @@ public class ContactManager extends Observable {
         for (Contact contact : contacts) {
             if (contact.sameIP(ip)) {
                 contact.setName(name);
+                try {
+                    MessagesBDD.getInstance().changePseudo(contact);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 if (contact.getState() == ContactState.UNNAMED) {
                     contact.setState(ContactState.CONNECTED);
                 }
+                this.updateObservers();
                 changed = true;
             }
         }
         if (!changed) {
             this.addContact(new Contact(name, ip));
+
         }
-        this.updateObservers();
+
     }
 
     public synchronized void changeState(ContactState state, String ip) {
+        boolean changed = false;
         for (Contact contact : contacts) {
             if (contact.sameIP(ip)) {
                 contact.setState(state);
+                changed = true;
             }
         }
-        this.updateObservers();
+        if (changed){
+            this.updateObservers();
+        }
     }
 
     public synchronized void setAllToDisconnected() {
@@ -110,6 +143,10 @@ public class ContactManager extends Observable {
     public void updateObservers() {
         this.setChanged();
         this.notifyObservers(this.contacts);
+        System.out.println("===================");
+        for(Contact c: this.contacts) {
+            System.out.println(c);
+        }
     }
 
     public void resetList() {

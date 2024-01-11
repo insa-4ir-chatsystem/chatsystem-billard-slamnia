@@ -1,5 +1,7 @@
 package org.clavardage.DiscoverySystem;
 
+import java.util.Objects;
+
 public class Contact {
     private String name;
     private String ip;
@@ -7,13 +9,13 @@ public class Contact {
 
     public Contact(String ip) {
         this.name = "";
-        this.ip = ip;
+        this.ip = cleanIp(ip);
         this.state = ContactState.UNNAMED;
     }
 
     public Contact(String name, String ip) {
         this.name = name;
-        this.ip = ip;
+        this.ip = cleanIp(ip);
         this.state = ContactState.CONNECTED;
     }
 
@@ -23,6 +25,10 @@ public class Contact {
 
     public ContactState getState() {
         return state;
+    }
+
+    private String cleanIp(String ip) {
+        return ip.replace("/", "");
     }
 
     public void setState(ContactState state) {
@@ -37,7 +43,21 @@ public class Contact {
         this.name = name;
     }
     public boolean sameIP(String ip) {
-        return ip.equals(this.ip);
+        return cleanIp(ip).equals(this.ip);
+    }
+    public boolean sameName(String name) {
+        return name.equals(this.name);
+    }
+
+    public boolean equals(Contact o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        return name.equals(o.name) && ip.equals(o.ip) && state == o.state;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, ip, state);
     }
 
     @Override

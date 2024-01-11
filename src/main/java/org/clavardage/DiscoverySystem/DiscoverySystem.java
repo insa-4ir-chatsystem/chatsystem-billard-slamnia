@@ -41,7 +41,6 @@ public class DiscoverySystem {
             throw new RuntimeException(e);
         }
 
-
         contactManager.setPseudo(pseudo);
         networkManager.sendAll("p"+pseudo);
     }
@@ -58,6 +57,10 @@ public class DiscoverySystem {
 
     public void attachObserverToContactList(Observer o) {
         this.contactManager.addObserver(o);
+    }
+
+    public void updateObservers() {
+        this.contactManager.updateObservers();
     }
 
     public void deleteObserver(Observer o) {

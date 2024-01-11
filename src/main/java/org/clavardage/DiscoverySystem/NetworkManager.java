@@ -8,7 +8,7 @@ public class NetworkManager {
     private DatagramSocket socket;
 
     private NetworkManager(int port) {
-        try {
+       try {
             //NetworkManager.socket = new DatagramSocket(NetworkManager.PORT);
             this.socket = new DatagramSocket(port);
 //            System.out.println("Port network server : " + this.socket.getLocalPort());

@@ -47,21 +47,24 @@ public class UDPServer extends Thread {
                 continue;
             }
 
+            System.out.println(received);
+
             /** Processing of the incoming data **/
             switch (received.charAt(0)) {
                 /** Disconnection of an Agent **/
                 case 'e' -> {
                     contactMgr.changeState(ContactState.DISCONNECTED, ip);
                 }
-                /** Connection of an Agent **/
+                /** ConnectionListener of an Agent **/
                 case 'c' -> {
                     contactMgr.addContact(new Contact(ip));
                     networkMgr.send(ip, "p" + contactMgr.getPseudo());
                 }
                 /** New Pseudo of an Agent **/
                 case 'p' -> {
-//                    System.out.println("pseudo received : " +received.substring(1) );
-                    contactMgr.changePseudo(received.substring(1), ip);
+                    String name = received.substring(1);
+//                    if (name.equals(contactMgr.getPseudo())) {continue;}
+                    contactMgr.changePseudo(name, ip);
                 }
                 default -> {
                     continue;
