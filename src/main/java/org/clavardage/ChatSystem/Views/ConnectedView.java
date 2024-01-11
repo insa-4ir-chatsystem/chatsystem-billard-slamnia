@@ -94,7 +94,6 @@ public class ConnectedView implements Observer {
             this.contactList.removeAllElements();
             for (Contact contact : contacts) {
                 this.contactList.addElement(contact.getName());
-                System.out.println(contact.getName());
             }
         } else if (observable instanceof MessagesHistory) {
             ArrayList<Message> messages = (ArrayList<Message>) o;

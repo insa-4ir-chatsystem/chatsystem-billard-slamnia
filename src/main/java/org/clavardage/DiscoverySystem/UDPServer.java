@@ -48,6 +48,7 @@ public class UDPServer extends Thread {
             if (received.isEmpty()) {
                 continue;
             }
+            System.out.println(received);
 
             /** Processing of the incoming data **/
             switch (received.charAt(0)) {

@@ -30,14 +30,20 @@ public class ContactManager extends Observable {
     }
 
     public void setPseudo(String pseudo) throws ExistingPseudoException {
+        boolean allowed = false;
         if (this.pseudo != null && !this.pseudo.equals(pseudo)) {
-            for (Contact contact : contacts) {
-                if (contact.getState() == ContactState.CONNECTED && contact.getName().equals(pseudo)) {
+            allowed = true;
+        }
+        for (Contact contact : contacts) {
+            if (contact.getState() == ContactState.CONNECTED && contact.getName().equals(pseudo)) {
+                if (allowed) {
+                    allowed = false;
+                } else {
                     throw new ExistingPseudoException("Pseudonym already existing");
                 }
             }
-            this.pseudo = pseudo;
         }
+        this.pseudo = pseudo;
     }
 
     public String getPseudo() {
@@ -145,10 +151,6 @@ public class ContactManager extends Observable {
     public void updateObservers() {
         this.setChanged();
         this.notifyObservers(this.contacts);
-        System.out.println("===================");
-        for(Contact c: this.contacts) {
-            System.out.println(c);
-        }
     }
 
     public void resetList() {
