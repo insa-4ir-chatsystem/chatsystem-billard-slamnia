@@ -72,7 +72,6 @@ public class MessagesBDDTests {
             @Override
             public void update(Observable observable, Object o) {
                 ArrayList<Message> messages = (ArrayList<Message>) o;
-                System.out.println("Observer notified");
                 this.length = messages.size();
                 if (this.length == 1) {
                     this.msg = messages.get(0);

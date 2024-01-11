@@ -1,4 +1,5 @@
 package org.clavardage.DiscoverySystem;
+import javax.swing.*;
 import java.net.*;
 
 public class NetworkManager {
@@ -39,8 +40,8 @@ public class NetworkManager {
             InetAddress address = InetAddress.getByName(ip);
             DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
             this.socket.send(packet);
-        } catch (Exception ignored) {
-
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Could not send " + msg + " to " + ip + ". ERROR: " + e.getMessage());
         }
     }
 
