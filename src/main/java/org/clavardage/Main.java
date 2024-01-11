@@ -3,17 +3,17 @@ package org.clavardage;
 import org.clavardage.ChatSystem.Network.TCPSender;
 import org.clavardage.ChatSystem.Network.TCPServer;
 import org.clavardage.ChatSystem.Views.MainWindow;
-import org.clavardage.ChatSystem.messageManagement.MessagesBDD;
-import org.clavardage.DiscoverySystem.Contact;
 import org.clavardage.DiscoverySystem.DiscoverySystem;
-import org.clavardage.DiscoverySystem.ExistingPseudoException;
+import org.clavardage.ChatSystem.messageManagement.MessagesBDD;
+//import org.clavardage.DiscoverySystem.Contact;
+//import org.clavardage.DiscoverySystem.ExistingPseudoException;
 
 import javax.swing.*;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Scanner;
+//import java.io.IOException;
+//import java.util.ArrayList;
+//import java.util.Observable;
+//import java.util.Observer;
+//import java.util.Scanner;
 
 public class Main {
 

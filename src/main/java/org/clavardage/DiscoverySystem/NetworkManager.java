@@ -78,8 +78,10 @@ public class NetworkManager {
     }
 
     public static void release() {
-        NetworkManager.instance.finalize();
-        NetworkManager.instance = null;
+        if (NetworkManager.instance != null) {
+            NetworkManager.instance.finalize();
+            NetworkManager.instance = null;
+        }
     }
 
     public void ignoreNextConnection() {

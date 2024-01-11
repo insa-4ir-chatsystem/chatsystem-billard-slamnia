@@ -42,17 +42,10 @@ public class MainWindow extends JFrame implements ActionListener {
             }
             case "logout" -> {
                 this.windowChoice.previous(this.container);
+                this.container.remove(1);
                 this.connectedView.clearObserver();
+                this.connectedView = null;
             }
-        }
-    }
-
-    public static void main(String[] args) {
-        try {
-            MainWindow form = new MainWindow();
-            form.setVisible(true);
-        }catch(Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
 }
