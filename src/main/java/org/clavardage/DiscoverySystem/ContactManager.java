@@ -98,9 +98,8 @@ public class ContactManager extends Observable {
                 }
                 if (contact.getState() == ContactState.UNNAMED) {
                     contact.setState(ContactState.CONNECTED);
-                } else {
-                    this.updateObservers();
                 }
+                this.updateObservers();
                 changed = true;
             }
         }
@@ -144,6 +143,10 @@ public class ContactManager extends Observable {
     public void updateObservers() {
         this.setChanged();
         this.notifyObservers(this.contacts);
+        System.out.println("===================");
+        for(Contact c: this.contacts) {
+            System.out.println(c);
+        }
     }
 
     public void resetList() {

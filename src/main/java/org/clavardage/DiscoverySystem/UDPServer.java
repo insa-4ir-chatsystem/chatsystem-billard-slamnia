@@ -47,6 +47,8 @@ public class UDPServer extends Thread {
                 continue;
             }
 
+            System.out.println(received);
+
             /** Processing of the incoming data **/
             switch (received.charAt(0)) {
                 /** Disconnection of an Agent **/
