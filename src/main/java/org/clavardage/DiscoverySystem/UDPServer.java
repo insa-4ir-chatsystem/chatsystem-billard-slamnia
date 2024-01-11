@@ -13,6 +13,8 @@ public class UDPServer extends Thread {
     private NetworkManager networkMgr;
     private final DatagramSocket socket;
 
+    private boolean ignoreNext = false;
+
     public UDPServer(DatagramSocket socket, NetworkManager netMgr) {
         super("UDPServer");
         this.contactMgr = ContactManager.getInstance();
@@ -47,7 +49,6 @@ public class UDPServer extends Thread {
                 continue;
             }
 
-
             /** Processing of the incoming data **/
             switch (received.charAt(0)) {
                 /** Disconnection of an Agent **/
@@ -57,7 +58,11 @@ public class UDPServer extends Thread {
                 /** ConnectionListener of an Agent **/
                 case 'c' -> {
                     contactMgr.addContact(new Contact(ip));
-                    networkMgr.send(ip, "p" + contactMgr.getPseudo());
+                    if (ignoreNext) {
+                        ignoreNext = false;
+                    } else {
+                        networkMgr.send(ip, "p" + contactMgr.getPseudo());
+                    }
                 }
                 /** New Pseudo of an Agent **/
                 case 'p' -> {
@@ -70,6 +75,10 @@ public class UDPServer extends Thread {
                 }
             }
         }
+    }
+
+    synchronized public void ignoreNextConnection() {
+        this.ignoreNext = true;
     }
 
     public void halt() {

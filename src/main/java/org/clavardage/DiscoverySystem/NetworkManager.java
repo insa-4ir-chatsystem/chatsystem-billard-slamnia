@@ -82,4 +82,8 @@ public class NetworkManager {
         NetworkManager.instance = null;
     }
 
+    public void ignoreNextConnection() {
+        this.udpServer.ignoreNextConnection();
+    }
+
 }
