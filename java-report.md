@@ -1,6 +1,6 @@
 # Tech stack
 ## UDP
-We had to use broacast traffic on the network in order to inform the other users that we are connected and that we are changing our pseudonym.
+We had to use broadcast traffic on the network in order to inform the other users that we are connected and that we are changing our pseudonym.
 ## TCP
 We had to assure that the messages between users are well distributed, which TCP offers on the network.
 ## Swing

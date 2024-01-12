@@ -8,8 +8,7 @@ import org.clavardage.ChatSystem.messageManagement.Message;
 import org.clavardage.ChatSystem.messageManagement.MessagesHistory;
 import org.clavardage.ChatSystem.messageManagement.MessagesMgr;
 import org.clavardage.ChatSystem.messageManagement.Origin;
-import org.clavardage.DiscoverySystem.Contact;
-import org.clavardage.DiscoverySystem.DiscoverySystem;
+import org.clavardage.DiscoverySystem.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -48,7 +47,7 @@ public class TCPTests {
     public void sendMessageTest() {
         class ContactObserver implements Observer {
 
-            private ArrayList<Contact> contacts;
+            private ArrayList<Contact> contacts = new ArrayList<Contact>();
             @Override
             public void update(Observable observable, Object o) {
                 if (o instanceof ArrayList<?>) {
@@ -75,6 +74,7 @@ public class TCPTests {
                 return this.lastMessage;
             }
         }
+
         ContactObserver contactObserver = new ContactObserver();
         MessageObserver msgObs = new MessageObserver();
         TCPTests.ds.attachObserverToContactList(contactObserver);

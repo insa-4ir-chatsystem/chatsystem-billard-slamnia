@@ -35,6 +35,7 @@ public class UDPServer extends Thread {
             try {
                 socket.receive(inPacket);
             } catch (SocketException e) {
+                System.out.println("--------- DEBUG de TCPServerTests/sendMessageTest: " + e.getMessage());
                 this.halt();
                 continue;
             }catch (IOException e) {

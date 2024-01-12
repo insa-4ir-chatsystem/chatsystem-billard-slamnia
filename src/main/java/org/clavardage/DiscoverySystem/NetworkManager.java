@@ -1,5 +1,6 @@
 package org.clavardage.DiscoverySystem;
 import javax.swing.*;
+import java.io.IOException;
 import java.net.*;
 
 public class NetworkManager {
@@ -55,6 +56,8 @@ public class NetworkManager {
             InetAddress address = InetAddress.getByName("255.255.255.255");
             DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
             this.socket.send(packet);
+        } catch (IOException e) {
+            System.out.println("--------- DEBUG de TCPServerTests/sendMessageTest: " + e.getMessage());
         } catch (Exception ignored) {
 
         }
@@ -62,6 +65,7 @@ public class NetworkManager {
 
     public void sendAll (String msg) {
         sendAllToPort(NetworkManager.PORT, msg);
+        System.out.println("--------- DEBUG de TCPServerTests/sendMessageTest: sendAll done");
     }
 
     public static int getPort() {

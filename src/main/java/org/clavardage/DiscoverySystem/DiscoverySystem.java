@@ -38,6 +38,7 @@ public class DiscoverySystem {
     public void connect(String pseudo) throws ExistingPseudoException{
         networkManager.ignoreNextConnection();
         networkManager.sendAll("c");
+        System.out.println("--------- DEBUG de TCPServerTests/sendMessageTest: DiscoverySystem connect done");
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
