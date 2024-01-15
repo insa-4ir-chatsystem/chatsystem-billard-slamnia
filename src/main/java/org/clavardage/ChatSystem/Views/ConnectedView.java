@@ -58,9 +58,12 @@ public class ConnectedView implements Observer {
         this.contactsListDisplay.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                msgHistory = msgManager.getHistory(getSelectedContact());
-                msgHistory.addObserver(self);
-                msgHistory.updateObservers();
+                Contact c = getSelectedContact();
+                if (c != null) {
+                    msgHistory = msgManager.getHistory(c);
+                    msgHistory.addObserver(self);
+                    msgHistory.updateObservers();
+                }
             }
         });
 
@@ -114,21 +117,17 @@ public class ConnectedView implements Observer {
         Contact res = null;
         try {
             String contactName = (String) contactsListDisplay.getSelectedValue();
-            if (contactName == null) {
-                JOptionPane.showMessageDialog(null,
-                        "Select contact before sending message");
-            } else {
-                res = ContactManager.getInstance().getContactByName((String) contactsListDisplay.getSelectedValue());
+            if (contactName != null) {
+                res = ContactManager.getInstance().getContactByName(contactName);
             }
         } catch (NoContactFoundException e) {
-            JOptionPane.showMessageDialog(null,
-                    "The selected contact is not found in the contact list");
+           throw new RuntimeException(e);
         }
         return res;
     }
 
     @Override
-    public void update(Observable observable, Object o) {
+    synchronized public void update(Observable observable, Object o) {
         if (observable instanceof ContactManager) {
             ArrayList<Contact> contacts = (ArrayList<Contact>) o;
             this.contactList.removeAllElements();

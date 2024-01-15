@@ -82,7 +82,7 @@ public class Main {
 //    }
     public static void main(String[] args) {
         try {
-            MessagesBDD.getInstance().recreateDatabase();
+//            MessagesBDD.getInstance().recreateDatabase();
             TCPServer.getInstance().start();
             MainWindow form = new MainWindow();
             form.setVisible(true);
