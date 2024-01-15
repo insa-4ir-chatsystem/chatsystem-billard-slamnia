@@ -36,6 +36,7 @@ public class DiscoverySystemTests {
     @AfterAll
     public static void finishTests() {
         DiscoverySystem.release();
+        socket.close();
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
@@ -85,22 +86,6 @@ public class DiscoverySystemTests {
     public void connectionTest() {
         this.connectionPhase("Pierre");
     }
-
-//   TODO: correct the test
-//    @DisplayName("Test pour la connexion de l'agent avec un pseudo existant")
-//    @Test
-//    public void connectionExistingPseudoTest() {
-//
-//        ExecutorService es = Executors.newSingleThreadExecutor();
-//        Future<?> future = es.submit(() -> {
-//                ds.connect("Pierre");
-//                return null;
-//        });
-//
-//        expectPacket("c");
-//        sendFromTestingNetwork("pPierre");
-//        assertThrows(ExistingPseudoException.class, future::get);
-//    }
 
     @DisplayName("Test pour la déconnexion de l'agent")
     @Test
