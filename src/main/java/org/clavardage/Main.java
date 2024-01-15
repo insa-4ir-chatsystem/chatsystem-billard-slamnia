@@ -92,7 +92,7 @@ public class Main {
     }
 
     public static void halt() {
-        DiscoverySystem.release();
+//        DiscoverySystem.release();
         TCPServer.getInstance().halt();
         TCPSender.getInstance().halt();
         System.exit(0);

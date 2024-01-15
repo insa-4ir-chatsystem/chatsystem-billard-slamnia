@@ -35,6 +35,8 @@ public class ConnectedView implements Observer {
     private MessagesHistory msgHistory;
     private DiscoverySystem ds = DiscoverySystem.getInstance();
 
+    private Origin lastMessageOrigin = null;
+
     public ConnectedView(ActionListener listener) {
         this.logOutButton.addActionListener(new ActionListener() {
             @Override
@@ -69,13 +71,45 @@ public class ConnectedView implements Observer {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (!messageArea.getText().equals("")) {
-                    Message msg = new Message(messageArea.getText(), getSelectedContact(), Origin.LOCAL);
-                    msgManager.sendMessage(msg);
+                    Contact contact = getSelectedContact();
+                    if (contact == null) {
+                        JOptionPane.showMessageDialog(null, "Select contact before sending message");
+                    } else {
+                        Message msg = new Message(messageArea.getText(), contact, Origin.LOCAL);
+                        msgManager.sendMessage(msg);
+                    }
                 }
             }
         });
     }
 
+    private String messagePrefix(Message msg) {
+        String res;
+        if (this.lastMessageOrigin == null) {
+            this.lastMessageOrigin = msg.getOrigin();
+            if (this.lastMessageOrigin == Origin.LOCAL) {
+                res = "You: ";
+            } else {
+                res = msg.getContact().getName() + ": ";
+            }
+        } else {
+            if (this.lastMessageOrigin == msg.getOrigin()) {
+                if (this.lastMessageOrigin == Origin.LOCAL) {
+                    res = "     ";
+                } else {
+                    int length = msg.getContact().getName().length() + 2;
+                    res = " ".repeat(length);
+                }
+            } else {
+                if (this.lastMessageOrigin == Origin.LOCAL) {
+                    res = "You: ";
+                } else {
+                    res = msg.getContact().getName() + ": ";
+                }
+            }
+        }
+        return res;
+    }
     private Contact getSelectedContact() {
         Contact res = null;
         try {
@@ -98,12 +132,14 @@ public class ConnectedView implements Observer {
         } else if (observable instanceof MessagesHistory) {
             ArrayList<Message> messages = (ArrayList<Message>) o;
             this.messageList.removeAllElements();
+            this.lastMessageOrigin = null;
             for (Message message : messages) {
-                if (message.getOrigin() == Origin.LOCAL) {
-                    this.messageList.addElement("You: " + message.getMessage());
-                } else if (message.getOrigin() == Origin.REMOTE) {
-                    this.messageList.addElement(getSelectedContact().getName() + ": " + message.getMessage());
-                }
+                this.messageList.addElement(this.messagePrefix(message) + message.getMessage());
+//                if (message.getOrigin() == Origin.LOCAL) {
+//                    this.messageList.addElement("You: " + message.getMessage());
+//                } else if (message.getOrigin() == Origin.REMOTE) {
+//                    this.messageList.addElement(getSelectedContact().getName() + ": " + message.getMessage());
+//                }
             }
         }
     }

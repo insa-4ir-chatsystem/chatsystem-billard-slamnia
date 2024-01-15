@@ -30,20 +30,23 @@ public class ContactManager extends Observable {
     }
 
     public void setPseudo(String pseudo) throws ExistingPseudoException {
-        boolean allowed = false;
-        if (this.pseudo != null && !this.pseudo.equals(pseudo)) {
-            allowed = true;
-        }
+        int occurences = 0;
+        System.out.println("----------ContactList----------");
         for (Contact contact : contacts) {
+            System.out.println(contact);
             if (contact.getState() == ContactState.CONNECTED && contact.getName().equals(pseudo)) {
-                if (allowed) {
-                    allowed = false;
-                } else {
-                    throw new ExistingPseudoException("Pseudonym already existing");
-                }
+                occurences += 1;
             }
         }
-        this.pseudo = pseudo;
+        if (this.pseudo != null && !this.pseudo.equals(pseudo)) {
+            occurences -= 1;
+        }
+        System.out.println("----------end of ContactList----------");
+        if (occurences <= 0) {
+            this.pseudo = pseudo;
+        } else {
+            throw new ExistingPseudoException();
+        }
     }
 
     public String getPseudo() {

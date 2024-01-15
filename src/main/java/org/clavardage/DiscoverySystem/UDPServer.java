@@ -35,7 +35,7 @@ public class UDPServer extends Thread {
             try {
                 socket.receive(inPacket);
             } catch (SocketException e) {
-                System.out.println("--------- DEBUG de TCPServerTests/sendMessageTest: " + e.getMessage());
+                System.out.println("--------- ERROR de UDPServer.run(): " + e.getMessage());
                 this.halt();
                 continue;
             }catch (IOException e) {
@@ -77,6 +77,7 @@ public class UDPServer extends Thread {
                 }
             }
         }
+        this.socket.close();
     }
 
     synchronized public void ignoreNextConnection() {
@@ -84,6 +85,7 @@ public class UDPServer extends Thread {
     }
 
     public void halt() {
+        System.out.println("UDPServer.halt() called");
         this.running = false;
         this.networkMgr = null;
     }

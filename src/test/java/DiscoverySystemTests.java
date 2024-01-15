@@ -32,6 +32,16 @@ public class DiscoverySystemTests {
         DiscoverySystemTests.contactManager = ContactManager.getInstance();
     }
 
+    @AfterAll
+    public static void finishTests() {
+        DiscoverySystem.release();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @AfterEach
     public void cleanUp() {
         DiscoverySystemTests.contactManager.setAllToDisconnected();
@@ -110,9 +120,11 @@ public class DiscoverySystemTests {
             assertDoesNotThrow(() -> {
                 ds.changePseudo("Valerie");
             });
+            System.out.println("Trying to connect as Cedric");
             assertThrows(ExistingPseudoException.class, () -> {
                 ds.changePseudo("Cedric");
             });
+            System.out.println("Connected as Cedric");
         });
         t.start();
         expectPacket("c");

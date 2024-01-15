@@ -60,7 +60,7 @@ public class ContactManagerTests {
     public void changeToInvalidPseudoTest() {
         manager.addContact(new Contact("a"));
         manager.changePseudo("Michel", "a");
-        assertThrows(Exception.class, () -> {
+        assertThrows(ExistingPseudoException.class, () -> {
             manager.setPseudo("Michel");
         });
     }
