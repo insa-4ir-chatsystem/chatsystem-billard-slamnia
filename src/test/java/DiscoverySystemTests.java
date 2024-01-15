@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -113,28 +114,34 @@ public class DiscoverySystemTests {
     @DisplayName("Test pour le changement de pseudo de l'agent")
     @Test
     public void changePseudoTest() {
-        Thread t = new Thread(() -> {
+        ExecutorService es = Executors.newSingleThreadExecutor();
+        Future<?> future = es.submit(() -> {
             assertDoesNotThrow(() -> {
                 ds.connect("Pierre");
             });
             assertDoesNotThrow(() -> {
                 ds.changePseudo("Valerie");
             });
+            Thread.sleep(100);
             System.out.println("Trying to connect as Cedric");
             assertThrows(ExistingPseudoException.class, () -> {
                 ds.changePseudo("Cedric");
             });
             System.out.println("Connected as Cedric");
+            return null;
         });
-        t.start();
+
         expectPacket("c");
         sendFromTestingNetwork("pCedric");
         expectPacket("pPierre");
         expectPacket("pValerie");
+
         try {
-            t.join();
+            future.get();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            fail(e.getMessage());
         }
     }
 
