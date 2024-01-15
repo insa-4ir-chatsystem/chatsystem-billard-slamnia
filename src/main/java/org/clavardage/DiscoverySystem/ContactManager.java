@@ -31,9 +31,7 @@ public class ContactManager extends Observable {
 
     public void setPseudo(String pseudo) throws ExistingPseudoException {
         int occurences = 0;
-        System.out.println("----------ContactList----------");
         for (Contact contact : contacts) {
-            System.out.println(contact);
             if (contact.getState() == ContactState.CONNECTED && contact.getName().equals(pseudo)) {
                 occurences += 1;
             }
@@ -41,8 +39,6 @@ public class ContactManager extends Observable {
         if (this.pseudo != null && this.pseudo.equals(pseudo)) {
             occurences -= 1;
         }
-        System.out.println("----------end of ContactList----------");
-        System.out.println("occurences = " + occurences);
         if (occurences <= 0) {
             this.pseudo = pseudo;
         } else {

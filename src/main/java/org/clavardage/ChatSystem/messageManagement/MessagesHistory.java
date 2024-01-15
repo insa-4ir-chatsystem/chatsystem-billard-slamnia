@@ -14,7 +14,7 @@ public class MessagesHistory extends Observable {
         this.messages = new ArrayList<>();
     }
 
-    public void addMessage(Message msg) {
+    synchronized public void addMessage(Message msg) {
         this.messages.add(msg);
         this.updateObservers();
     }

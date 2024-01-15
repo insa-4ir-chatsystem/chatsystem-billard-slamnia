@@ -86,34 +86,40 @@ public class ConnectedView implements Observer {
     private String messagePrefix(Message msg) {
         String res;
         if (this.lastMessageOrigin == null) {
-            this.lastMessageOrigin = msg.getOrigin();
-            if (this.lastMessageOrigin == Origin.LOCAL) {
+            if (msg.getOrigin() == Origin.LOCAL) {
                 res = "You: ";
             } else {
                 res = msg.getContact().getName() + ": ";
             }
         } else {
             if (this.lastMessageOrigin == msg.getOrigin()) {
-                if (this.lastMessageOrigin == Origin.LOCAL) {
+                if (msg.getOrigin() == Origin.LOCAL) {
                     res = "     ";
                 } else {
                     int length = msg.getContact().getName().length() + 2;
                     res = " ".repeat(length);
                 }
             } else {
-                if (this.lastMessageOrigin == Origin.LOCAL) {
+                if (msg.getOrigin() == Origin.LOCAL) {
                     res = "You: ";
                 } else {
                     res = msg.getContact().getName() + ": ";
                 }
             }
         }
+        this.lastMessageOrigin = msg.getOrigin();
         return res;
     }
     private Contact getSelectedContact() {
         Contact res = null;
         try {
-            res = ContactManager.getInstance().getContactByName((String) contactsListDisplay.getSelectedValue());
+            String contactName = (String) contactsListDisplay.getSelectedValue();
+            if (contactName == null) {
+                JOptionPane.showMessageDialog(null,
+                        "Select contact before sending message");
+            } else {
+                res = ContactManager.getInstance().getContactByName((String) contactsListDisplay.getSelectedValue());
+            }
         } catch (NoContactFoundException e) {
             JOptionPane.showMessageDialog(null,
                     "The selected contact is not found in the contact list");
