@@ -51,16 +51,15 @@ public class NetworkManager {
     }
 
     public void sendAllToPort (int port, String msg) {
-        byte[] buf = msg.getBytes();
-        try {
-            InetAddress address = InetAddress.getByName("255.255.255.255");
-            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
-            this.socket.send(packet);
-        } catch (IOException e) {
-            System.out.println("--------- ERROR de NetworkManager.sendAllToPort: " + e.getMessage());
-        } catch (Exception ignored) {
-
-        }
+            byte[] buf = msg.getBytes();
+            try {
+                InetAddress address = InetAddress.getByName("255.255.255.255");
+                DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+                this.socket.send(packet);
+            } catch (IOException e) {
+                System.out.println("--------- ERROR de NetworkManager.sendAllToPort: " + e.getMessage());
+            } catch (Exception ignored) {
+            }
     }
 
     public void sendAll (String msg) {
@@ -72,6 +71,7 @@ public class NetworkManager {
     }
 
     protected void finalize() {
+        System.out.println("finalized called");
         this.socket.close();
         try {
             this.udpServer.join();

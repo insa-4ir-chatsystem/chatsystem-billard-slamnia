@@ -63,7 +63,9 @@ public class UDPServer extends Thread {
                     if (ignoreNext) {
                         ignoreNext = false;
                     } else {
-                        networkMgr.send(ip, "p" + contactMgr.getPseudo());
+                        if (contactMgr.getPseudo() != null) {
+                            networkMgr.send(ip, "p" + contactMgr.getPseudo());
+                        }
                     }
                 }
                 /** New Pseudo of an Agent **/

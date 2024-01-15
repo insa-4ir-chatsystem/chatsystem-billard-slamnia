@@ -38,10 +38,11 @@ public class ContactManager extends Observable {
                 occurences += 1;
             }
         }
-        if (this.pseudo != null && !this.pseudo.equals(pseudo)) {
+        if (this.pseudo != null && this.pseudo.equals(pseudo)) {
             occurences -= 1;
         }
         System.out.println("----------end of ContactList----------");
+        System.out.println("occurences = " + occurences);
         if (occurences <= 0) {
             this.pseudo = pseudo;
         } else {

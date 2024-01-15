@@ -37,7 +37,6 @@ public class ContactManagerTests {
         assertEquals(ContactState.CONNECTED, michel.get().getState());
     }
 
-    @DisplayName("Test pour l'insertion d'un contact deux fois")
     @Test
     public void insertionContactTwiceTest() {
         manager.addContact(new Contact("a"));

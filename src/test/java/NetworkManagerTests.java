@@ -95,8 +95,8 @@ public class NetworkManagerTests
             DatagramPacket packet2 = new DatagramPacket(bufChangePseudo, bufChangePseudo.length, address, NetworkManager.getPort());
             NetworkManagerTests.socket.send(packet2);
 
-            Thread.sleep(500);
-            //assertEquals(1,contManager.getConnectedContacts().size());
+            Thread.sleep(100);
+            assertEquals(1,contManager.getConnectedContacts().size());
             assertEquals("Paul",contManager.getConnectedContacts().get(0).getName());
         } catch (Exception ignored) {
         }
