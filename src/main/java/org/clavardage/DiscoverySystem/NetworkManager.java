@@ -71,7 +71,6 @@ public class NetworkManager {
     }
 
     protected void finalize() {
-        System.out.println("finalized called");
         this.socket.close();
         try {
             this.udpServer.join();

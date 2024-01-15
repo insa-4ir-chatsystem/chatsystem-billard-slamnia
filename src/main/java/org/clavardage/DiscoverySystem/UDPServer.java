@@ -31,7 +31,6 @@ public class UDPServer extends Thread {
         while (this.running) {
             /** Creation of a new UDP PDU to receive incoming packets **/
             DatagramPacket inPacket = new DatagramPacket(buf, buf.length);
-//            System.out.println("Port Udp server : " + this.socket.getLocalPort());
             try {
                 socket.receive(inPacket);
             } catch (SocketException e) {
@@ -49,7 +48,6 @@ public class UDPServer extends Thread {
             if (received.isEmpty()) {
                 continue;
             }
-            System.out.println(received);
 
             /** Processing of the incoming data **/
             switch (received.charAt(0)) {
@@ -87,7 +85,6 @@ public class UDPServer extends Thread {
     }
 
     public void halt() {
-        System.out.println("UDPServer.halt() called");
         this.running = false;
         this.networkMgr = null;
     }

@@ -29,8 +29,6 @@ public class TCPSender {
         Socket sock = this.sockets.get(ip);
         PrintWriter out;
         if (sock == null) {
-            System.out.println("IP = " + ip);
-            System.out.println("Port = " + TCPServer.getPort());
             try {
                 sock = new Socket(ip, TCPServer.getPort());
             } catch (IOException e) {

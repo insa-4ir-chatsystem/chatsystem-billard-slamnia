@@ -78,8 +78,11 @@ public class ConnectedView implements Observer {
                     if (contact == null) {
                         JOptionPane.showMessageDialog(null, "Select contact before sending message");
                     } else {
-                        Message msg = new Message(messageArea.getText(), contact, Origin.LOCAL);
-                        msgManager.sendMessage(msg);
+                        String[] msgs = messageArea.getText().split("\n");
+                        for (int i = msgs.length - 1; i >= 0; i--) {
+                            Message msg = new Message(msgs[i], contact, Origin.LOCAL);
+                            msgManager.sendMessage(msg);
+                        }
                     }
                 }
             }
@@ -113,6 +116,7 @@ public class ConnectedView implements Observer {
         this.lastMessageOrigin = msg.getOrigin();
         return res;
     }
+
     private Contact getSelectedContact() {
         Contact res = null;
         try {
@@ -121,7 +125,7 @@ public class ConnectedView implements Observer {
                 res = ContactManager.getInstance().getContactByName(contactName);
             }
         } catch (NoContactFoundException e) {
-           throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
         return res;
     }
@@ -132,20 +136,25 @@ public class ConnectedView implements Observer {
             ArrayList<Contact> contacts = (ArrayList<Contact>) o;
             this.contactList.removeAllElements();
             for (Contact contact : contacts) {
-                this.contactList.addElement(contact.getName());
+                this.contactList.add(0, contact.getName());
             }
         } else if (observable instanceof MessagesHistory) {
             ArrayList<Message> messages = (ArrayList<Message>) o;
             this.messageList.removeAllElements();
             this.lastMessageOrigin = null;
             for (Message message : messages) {
-                this.messageList.addElement(this.messagePrefix(message) + message.getMessage());
+                this.messageList.add(0, this.messagePrefix(message) + message.getMessage());
+            }
+//            for (int i = messages.size() - 1; i >= 0; i--) {
+//                Message message = messages.get(i);
+//            }
+//            for (Message message : messages) {
 //                if (message.getOrigin() == Origin.LOCAL) {
 //                    this.messageList.addElement("You: " + message.getMessage());
 //                } else if (message.getOrigin() == Origin.REMOTE) {
 //                    this.messageList.addElement(getSelectedContact().getName() + ": " + message.getMessage());
 //                }
-            }
+//            }
         }
     }
 

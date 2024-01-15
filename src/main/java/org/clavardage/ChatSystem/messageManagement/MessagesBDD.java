@@ -9,6 +9,8 @@ import org.clavardage.ChatSystem.exceptions.InvalidOriginException;
 import org.clavardage.ChatSystem.exceptions.UserUnobtainableException;
 import org.clavardage.DiscoverySystem.Contact;
 
+import javax.swing.*;
+
 public class MessagesBDD {
     private static MessagesBDD instance;
     private Connection connection;
@@ -122,12 +124,10 @@ public class MessagesBDD {
                     return id;
                 } else {
                     statement.close();
-                    System.out.println("This is not the last id");
                     throw new UserUnobtainableException();
                 }
             } else {
                 statement.close();
-                System.out.println("There is no id");
                 throw new UserUnobtainableException();
             }
         } catch (SQLException e) {
@@ -178,7 +178,7 @@ public class MessagesBDD {
          } catch (UserUnobtainableException e) {
              System.out.println("User unknown");
          } catch (InvalidOriginException e) {
-             System.out.println("Message with strange origin in database");
+             JOptionPane.showMessageDialog(null, "Message without origin in database");
          }
      }
 
