@@ -1,73 +1,42 @@
-<mxfile host="app.diagrams.net" modified="2023-10-18T09:48:31.688Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="PAPtC6defNtd7GXg3I0i" version="22.0.4" type="github">
+<mxfile host="app.diagrams.net" modified="2024-01-16T08:51:35.569Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0" etag="-Nf4pf8X2RIAiVcp4bGC" version="22.1.18" type="github">
   <diagram name="Page-1" id="1iA79TyCtK93nK60ap_h">
-    <mxGraphModel dx="1434" dy="692" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="lKAwWVuy-IsimusGvwi6-10" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" parent="1" source="lKAwWVuy-IsimusGvwi6-1" target="lKAwWVuy-IsimusGvwi6-7" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-17" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" parent="1" source="lKAwWVuy-IsimusGvwi6-1" target="lKAwWVuy-IsimusGvwi6-16" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="lKAwWVuy-IsimusGvwi6-19" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" parent="1" source="lKAwWVuy-IsimusGvwi6-1" target="lKAwWVuy-IsimusGvwi6-18" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-1" value="Utilisateur" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+        <mxCell id="lKAwWVuy-IsimusGvwi6-1" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
           <mxGeometry x="80" y="270" width="30" height="60" as="geometry" />
         </mxCell>
         <mxCell id="lKAwWVuy-IsimusGvwi6-2" value="" style="swimlane;startSize=0;" parent="1" vertex="1">
-          <mxGeometry x="260" y="180" width="430" height="580" as="geometry">
+          <mxGeometry x="240" y="170" width="430" height="580" as="geometry">
             <mxRectangle x="310" y="180" width="50" height="40" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
         <mxCell id="lKAwWVuy-IsimusGvwi6-3" value="&lt;div&gt;CommonUseCase: ChatSystem&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="lKAwWVuy-IsimusGvwi6-2" vertex="1">
           <mxGeometry x="190" width="190" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-7" value="Echange de messages textuels" style="ellipse;whiteSpace=wrap;html=1;" parent="lKAwWVuy-IsimusGvwi6-2" vertex="1">
-          <mxGeometry x="50" y="10" width="120" height="80" as="geometry" />
+        <mxCell id="lKAwWVuy-IsimusGvwi6-7" value="Exchange of textual messages" style="ellipse;whiteSpace=wrap;html=1;" parent="lKAwWVuy-IsimusGvwi6-2" vertex="1">
+          <mxGeometry x="70" y="40" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-8" value="Echange de fichiers" style="ellipse;whiteSpace=wrap;html=1;" parent="lKAwWVuy-IsimusGvwi6-2" vertex="1">
-          <mxGeometry x="170" y="60" width="120" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-9" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;dashed=1;strokeWidth=1;" parent="lKAwWVuy-IsimusGvwi6-2" source="lKAwWVuy-IsimusGvwi6-8" target="lKAwWVuy-IsimusGvwi6-7" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-12" value="&amp;lt;&amp;lt;extends&amp;gt;&amp;gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="lKAwWVuy-IsimusGvwi6-9" vertex="1" connectable="0">
-          <mxGeometry x="-0.36" y="-5" relative="1" as="geometry">
-            <mxPoint x="16" y="-17" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-16" value="Visualiser les médias" style="ellipse;whiteSpace=wrap;html=1;" parent="lKAwWVuy-IsimusGvwi6-2" vertex="1">
-          <mxGeometry x="80" y="170" width="120" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-18" value="Montrer les autres utilisateurs connectés" style="ellipse;whiteSpace=wrap;html=1;" parent="lKAwWVuy-IsimusGvwi6-2" vertex="1">
+        <mxCell id="lKAwWVuy-IsimusGvwi6-18" value="Show the other users" style="ellipse;whiteSpace=wrap;html=1;" parent="lKAwWVuy-IsimusGvwi6-2" vertex="1">
           <mxGeometry x="240" y="140" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-23" value="Connexion au réseau" style="ellipse;whiteSpace=wrap;html=1;" parent="lKAwWVuy-IsimusGvwi6-2" vertex="1">
+        <mxCell id="lKAwWVuy-IsimusGvwi6-23" value="Connect to the network" style="ellipse;whiteSpace=wrap;html=1;" parent="lKAwWVuy-IsimusGvwi6-2" vertex="1">
           <mxGeometry x="300" y="50" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-45" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" parent="lKAwWVuy-IsimusGvwi6-2" source="lKAwWVuy-IsimusGvwi6-40" target="lKAwWVuy-IsimusGvwi6-44" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-47" value="&amp;lt;&amp;lt;includes&amp;gt;&amp;gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="lKAwWVuy-IsimusGvwi6-45" vertex="1" connectable="0">
-          <mxGeometry x="0.1074" y="-2" relative="1" as="geometry">
-            <mxPoint x="37" y="-1" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-40" value="Installer un agent" style="ellipse;whiteSpace=wrap;html=1;" parent="lKAwWVuy-IsimusGvwi6-2" vertex="1">
+        <mxCell id="lKAwWVuy-IsimusGvwi6-40" value="Install the app" style="ellipse;whiteSpace=wrap;html=1;" parent="lKAwWVuy-IsimusGvwi6-2" vertex="1">
           <mxGeometry x="70" y="330" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-44" value="Configurer l&#39;agent" style="ellipse;whiteSpace=wrap;html=1;" parent="lKAwWVuy-IsimusGvwi6-2" vertex="1">
-          <mxGeometry x="160" y="430" width="120" height="80" as="geometry" />
+        <mxCell id="0fDk7-egbqvxXeHkAJud-1" value="Change pseudonym to a unique one" style="ellipse;whiteSpace=wrap;html=1;" parent="lKAwWVuy-IsimusGvwi6-2" vertex="1">
+          <mxGeometry x="60" y="180" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-49" value="Désinstaller un agent" style="ellipse;whiteSpace=wrap;html=1;" parent="lKAwWVuy-IsimusGvwi6-2" vertex="1">
-          <mxGeometry x="20" y="490" width="120" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="0fDk7-egbqvxXeHkAJud-1" value="&lt;div&gt;Changer de pseudonyme unique&lt;br&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="lKAwWVuy-IsimusGvwi6-2">
-          <mxGeometry x="10" y="240" width="120" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-20" value="Réseau" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+        <mxCell id="lKAwWVuy-IsimusGvwi6-20" value="Network" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
           <mxGeometry x="740" y="340" width="30" height="60" as="geometry" />
         </mxCell>
         <mxCell id="lKAwWVuy-IsimusGvwi6-21" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" parent="1" source="lKAwWVuy-IsimusGvwi6-18" target="lKAwWVuy-IsimusGvwi6-20" edge="1">
@@ -76,29 +45,23 @@
         <mxCell id="lKAwWVuy-IsimusGvwi6-24" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" parent="1" source="lKAwWVuy-IsimusGvwi6-23" target="lKAwWVuy-IsimusGvwi6-20" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-11" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.085;entryY=0.792;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" parent="1" source="lKAwWVuy-IsimusGvwi6-1" target="lKAwWVuy-IsimusGvwi6-8" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="120" y="280" as="sourcePoint" />
-            <mxPoint x="422" y="300" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
         <mxCell id="lKAwWVuy-IsimusGvwi6-43" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" parent="1" source="lKAwWVuy-IsimusGvwi6-39" target="lKAwWVuy-IsimusGvwi6-40" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-48" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" parent="1" source="lKAwWVuy-IsimusGvwi6-39" target="lKAwWVuy-IsimusGvwi6-44" edge="1">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="lKAwWVuy-IsimusGvwi6-39" value="&lt;div&gt;Administrator&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+          <mxGeometry x="90" y="585" width="30" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-50" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" parent="1" source="lKAwWVuy-IsimusGvwi6-39" target="lKAwWVuy-IsimusGvwi6-49" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="lKAwWVuy-IsimusGvwi6-39" value="Administrateur" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
-          <mxGeometry x="100" y="440" width="30" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="0fDk7-egbqvxXeHkAJud-2" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="lKAwWVuy-IsimusGvwi6-1" target="0fDk7-egbqvxXeHkAJud-1">
+        <mxCell id="0fDk7-egbqvxXeHkAJud-2" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" parent="1" source="lKAwWVuy-IsimusGvwi6-1" target="0fDk7-egbqvxXeHkAJud-1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="110" y="332" as="sourcePoint" />
             <mxPoint x="327" y="408" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="ifmzQvitbIVE-MRjwJJ3-1" value="&lt;h1&gt;Actors&lt;/h1&gt;&lt;div&gt;We consider the following actors:&lt;/div&gt;&lt;div&gt;- Users who use the application to chat with their collegues&lt;br&gt;&lt;/div&gt;&lt;div&gt;- Administrators who install the app&lt;br&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="10" width="330" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="ifmzQvitbIVE-MRjwJJ3-4" value="&lt;h1&gt;Hypothèses&lt;br&gt;&lt;/h1&gt;&lt;p&gt;- On a un réseau fiable&amp;nbsp;&amp;nbsp; (surtout pour la partie UDP)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="470" y="10" width="190" height="120" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
