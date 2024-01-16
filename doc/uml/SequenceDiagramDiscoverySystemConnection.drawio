@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-01-16T09:49:52.262Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0" etag="-hKY7xKF63-VeFuG43nt" version="22.1.18" type="github">
+<mxfile host="app.diagrams.net" modified="2024-01-16T10:01:34.412Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0" etag="1cjPgjbPG_cgGkkscz5F" version="22.1.18" type="github">
   <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
     <mxGraphModel dx="1434" dy="732" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -108,7 +108,7 @@
         <mxCell id="l9oPeWCAGBVxJQq6a7R_-6" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="l9oPeWCAGBVxJQq6a7R_-1">
           <mxGeometry x="45" y="215" width="10" height="95" as="geometry" />
         </mxCell>
-        <mxCell id="l9oPeWCAGBVxJQq6a7R_-3" value=":Network" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+        <mxCell id="l9oPeWCAGBVxJQq6a7R_-3" value=":Socket" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
           <mxGeometry x="480" y="40" width="100" height="460" as="geometry" />
         </mxCell>
         <mxCell id="l9oPeWCAGBVxJQq6a7R_-4" value="send(connection)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" source="l9oPeWCAGBVxJQq6a7R_-2">
@@ -120,7 +120,7 @@
             <mxPoint x="529.5" y="172.38" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="l9oPeWCAGBVxJQq6a7R_-7" value="return()" style="html=1;verticalAlign=bottom;endArrow=open;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endFill=0;dashed=1;" edge="1" parent="1">
+        <mxCell id="l9oPeWCAGBVxJQq6a7R_-7" value="return()" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endFill=1;dashed=1;" edge="1" parent="1">
           <mxGeometry x="0.064" relative="1" as="geometry">
             <mxPoint x="779.5" y="350" as="sourcePoint" />
             <Array as="points">
