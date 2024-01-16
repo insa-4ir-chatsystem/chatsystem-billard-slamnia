@@ -17,7 +17,7 @@ public class NetworkManager {
         } catch (Exception e) {
             throw new RuntimeException("Could not create client Socket");
         }
-        this.udpServer = new UDPServer(socket, this);
+        this.udpServer = new UDPServer(socket);
         this.udpServer.start();
     }
 

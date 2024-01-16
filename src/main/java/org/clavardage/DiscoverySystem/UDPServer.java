@@ -10,15 +10,13 @@ public class UDPServer extends Thread {
 
     private boolean running;
     private final ContactManager contactMgr;
-    private NetworkManager networkMgr;
     private final DatagramSocket socket;
 
     private boolean ignoreNext = false;
 
-    public UDPServer(DatagramSocket socket, NetworkManager netMgr) {
+    public UDPServer(DatagramSocket socket) {
         super("UDPServer");
         this.contactMgr = ContactManager.getInstance();
-        this.networkMgr = netMgr;
         this.socket = socket;
         this.running = true;
     }
@@ -62,7 +60,7 @@ public class UDPServer extends Thread {
                         ignoreNext = false;
                     } else {
                         if (contactMgr.getPseudo() != null) {
-                            networkMgr.send(ip, "p" + contactMgr.getPseudo());
+                            NetworkManager.getInstance().send(ip, "p" + contactMgr.getPseudo());
                         }
                     }
                 }
@@ -86,6 +84,5 @@ public class UDPServer extends Thread {
 
     public void halt() {
         this.running = false;
-        this.networkMgr = null;
     }
 }

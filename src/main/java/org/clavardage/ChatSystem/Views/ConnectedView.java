@@ -49,7 +49,6 @@ public class ConnectedView implements Observer {
         // Contact list part
         this.contactList = new DefaultListModel<String>();
         this.ds.attachObserverToContactList(this);
-        this.ds.updateObservers();
 
         this.contactsListDisplay.setModel(this.contactList);
 

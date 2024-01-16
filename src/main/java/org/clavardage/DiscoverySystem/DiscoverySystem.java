@@ -65,16 +65,8 @@ public class DiscoverySystem {
         this.contactManager.addObserver(o);
     }
 
-    public void updateObservers() {
-        this.contactManager.updateObservers();
-    }
-
     public void deleteObserver(Observer o) {
         this.contactManager.deleteObserver(o);
-    }
-
-    public void clearObservers() {
-        this.contactManager.deleteObservers();
     }
 
     public static void release() {
