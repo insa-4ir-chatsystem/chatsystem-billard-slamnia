@@ -1,26 +1,30 @@
-# ~~Burn~~ Replace with your own after reading
+# Distributed Chat System
 
-This private repository is created for you so that your teachers have access to it.
+This is a distributed chat system allowing multiple users to chat on the same network in real time.
+This program needs to have hsqldb installed alongside it.
 
-## Identify yourself
+## How to run
 
-Before anything, **complete the `metadata.yml` with your own information.** 
+Prerequisties:
+- JDK v.17
+- Sqlite3
+- Maven
 
-This is the file that we will use to identify the teacher responsible for the repository and assign the grades to the participating students.
+First clone the repository:
 
-## Take ownership
+```sh
+git clone https://github.com/insa-4ir-chatsystem/chatsystem-billard-slamnia.git
+```
 
-As long as you make sure to keep the `metadata.yml` file at the root of this repository, you are free to do anything. Our suggestion would be to have it organized into something like the following:
+Then you have to execute the installation.sh file:
 
-    .gitignore
-    metadata.yml
-    pom.xml
-    README.md
-    src/
-      main/
-      test/
-    doc/
-      uml/
-      report.pdf
+```sh
+./installation.sh
+```
 
-In particular, you will soon have to replace this README with something that describes your own project.
+To run the application, type:
+```sh
+java -jar target/clavardage-2.0-FINAL.jar
+```
+
+If a problem occur with the UIDesigner dependancy, please use IntelliJ to run the application
