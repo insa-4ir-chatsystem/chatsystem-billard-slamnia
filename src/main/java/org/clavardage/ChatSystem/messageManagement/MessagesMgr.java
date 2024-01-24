@@ -4,6 +4,7 @@ import org.clavardage.ChatSystem.Network.TCPSender;
 import org.clavardage.ChatSystem.exceptions.UserUnobtainableException;
 import org.clavardage.DiscoverySystem.Contact;
 
+import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -44,7 +45,7 @@ public class MessagesMgr {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (UserUnobtainableException e) {
-            System.out.println("User not found");
+            JOptionPane.showMessageDialog(null, "User not found");
         }
     }
 

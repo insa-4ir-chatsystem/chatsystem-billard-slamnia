@@ -27,7 +27,6 @@ public class ConnectionListener extends Thread {
     @Override
     public void run() {
         BufferedReader in;
-//        TCPServer tcpServer = TCPServer.getInstance();
         try {
             in = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
             String inputline;

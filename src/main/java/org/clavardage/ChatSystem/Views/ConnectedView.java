@@ -144,16 +144,6 @@ public class ConnectedView implements Observer {
             for (Message message : messages) {
                 this.messageList.add(0, this.messagePrefix(message) + message.getMessage());
             }
-//            for (int i = messages.size() - 1; i >= 0; i--) {
-//                Message message = messages.get(i);
-//            }
-//            for (Message message : messages) {
-//                if (message.getOrigin() == Origin.LOCAL) {
-//                    this.messageList.addElement("You: " + message.getMessage());
-//                } else if (message.getOrigin() == Origin.REMOTE) {
-//                    this.messageList.addElement(getSelectedContact().getName() + ": " + message.getMessage());
-//                }
-//            }
         }
     }
 

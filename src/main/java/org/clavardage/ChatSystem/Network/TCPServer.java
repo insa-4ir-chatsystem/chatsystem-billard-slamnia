@@ -21,7 +21,6 @@ public class TCPServer extends Thread {
     @Override
     public void run() {
         ContactManager contactMgr = ContactManager.getInstance();
-//        MessagesMgr msgMgr = MessagesMgr.getInstance();
         this.connectionListeners = new ArrayList<>();
         try {
             ServerSocket srvSock = new ServerSocket(TCPServer.SERVERPORT);

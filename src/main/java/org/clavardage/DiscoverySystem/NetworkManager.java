@@ -11,9 +11,7 @@ public class NetworkManager {
 
     private NetworkManager(int port) {
        try {
-            //NetworkManager.socket = new DatagramSocket(NetworkManager.PORT);
             this.socket = new DatagramSocket(port);
-//            System.out.println("Port network server : " + this.socket.getLocalPort());
         } catch (Exception e) {
             throw new RuntimeException("Could not create client Socket");
         }
@@ -50,20 +48,19 @@ public class NetworkManager {
         sendToPort(ip, NetworkManager.PORT, msg);
     }
 
-    public void sendAllToPort (int port, String msg) {
+    public void sendAllToPort (int port, String msg) throws IOException{
             byte[] buf = msg.getBytes();
-            try {
-                InetAddress address = InetAddress.getByName("255.255.255.255");
-                DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
-                this.socket.send(packet);
-            } catch (IOException e) {
-                System.out.println("--------- ERROR de NetworkManager.sendAllToPort: " + e.getMessage());
-            } catch (Exception ignored) {
-            }
+            InetAddress address = InetAddress.getByName("255.255.255.255");
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+            this.socket.send(packet);
     }
 
     public void sendAll (String msg) {
-        sendAllToPort(NetworkManager.PORT, msg);
+        try {
+            sendAllToPort(NetworkManager.PORT, msg);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static int getPort() {

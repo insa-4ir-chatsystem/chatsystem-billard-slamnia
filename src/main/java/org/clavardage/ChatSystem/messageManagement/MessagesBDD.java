@@ -18,7 +18,6 @@ public class MessagesBDD {
     private Statement statement;
     private MessagesBDD() {
         try {
-//            Class.forName("org.hsqldb.jdbcDriver");
             String home_dir = System.getProperty("user.home");
             this.connection = DriverManager.getConnection("jdbc:sqlite:" + home_dir + "/.cache/chatsystem/history.db");
         } catch (SQLException e) {
@@ -133,7 +132,6 @@ public class MessagesBDD {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-//        statement.executeBatch();
     }
 
      public void addMessage(Message msg) throws SQLException, UserUnobtainableException {
@@ -176,7 +174,7 @@ public class MessagesBDD {
          } catch (InvalidMessageTypeException e) {
              System.out.println("Message has invalid type");
          } catch (UserUnobtainableException e) {
-             System.out.println("User unknown");
+             JOptionPane.showMessageDialog(null, "User unknown");
          } catch (InvalidOriginException e) {
              JOptionPane.showMessageDialog(null, "Message without origin in database");
          }

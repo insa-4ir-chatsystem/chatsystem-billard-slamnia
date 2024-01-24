@@ -112,7 +112,6 @@ public class DiscoverySystemTests {
             assertThrows(ExistingPseudoException.class, () -> {
                 ds.changePseudo("Cedric");
             });
-            System.out.println("Connected as Cedric");
             return null;
         });
 
@@ -154,8 +153,6 @@ public class DiscoverySystemTests {
         ds.attachObserverToContactList(obs);
         connectionPhase("Jean");
         contactManager.addContact(new Contact("45.45.45.45"));
-//        sendFromTestingNetwork("c");
-//        sendFromTestingNetwork("pValentin");
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {

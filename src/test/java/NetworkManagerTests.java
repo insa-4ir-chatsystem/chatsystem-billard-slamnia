@@ -79,7 +79,7 @@ public class NetworkManagerTests
 
             assertEquals("a",received) ;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            fail();
         }
     }
 
