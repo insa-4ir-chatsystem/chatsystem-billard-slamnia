@@ -5,21 +5,26 @@ This program needs to have hsqldb installed alongside it.
 
 ## How to run
 
-first clone the repository:
+Prerequisties:
+- JDK v.17
+- Sqlite3
+- Maven
+
+First clone the repository:
 
 ```sh
 git clone https://github.com/insa-4ir-chatsystem/chatsystem-billard-slamnia.git
 ```
 
-ensuite il faut build le package:
+Then you have to execute the installation.sh file:
 
 ```sh
-mvn package -f pom.xml
+./installation.sh
 ```
 
-To run the example, type:
+To run the application, type:
 ```sh
-java -jar target/clavardage-1.0-SNAPSHOT.jar
+java -jar target/clavardage-2.0-FINAL.jar
 ```
 
-
+If a problem occur with the UIDesigner dependancy, please use IntelliJ to run the application
